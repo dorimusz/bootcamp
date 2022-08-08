@@ -7,7 +7,4 @@ export class Contribution {
 
   @Column()
   repository: number;
-
-  @Column()
-  line_count: number;
 }
