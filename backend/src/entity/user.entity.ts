@@ -3,7 +3,7 @@ import { Repository } from './repository.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'int4' })
   id: number; //owner.id
 
   @Column({ type: 'varchar', length: 255 })
@@ -20,7 +20,7 @@ export class User extends BaseEntity {
 
   //a user can have more than one repository, so it's a one-to-many relationship??
   @OneToMany(() => Repository, (repository) => repository.owner, {
-    onDelete: 'NO ACTION',
+    onDelete: 'NO ACTION', //if repository is deleted, don't do anything
   })
   repository: Repository;
 }

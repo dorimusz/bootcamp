@@ -2,9 +2,9 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('contribution')
 export class Contribution {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'int4' })
   user: number;
 
-  @Column()
+  @Column({ type: 'int4' })
   repository: number;
 }
