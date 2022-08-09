@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, PrimaryColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryColumn, BaseEntity } from 'typeorm';
 import { Repository } from './repository.entity';
 
 @Entity('user')
@@ -18,6 +18,9 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   type: string;
 
-  @OneToOne(() => Repository, (repository) => repository.owner)
+  //a user can have more than one repository, so it's a one-to-many relationship??
+  @OneToMany(() => Repository, (repository) => repository.owner, {
+    onDelete: 'NO ACTION',
+  })
   repository: Repository;
 }

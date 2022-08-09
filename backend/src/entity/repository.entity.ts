@@ -1,5 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-import { Entity, Column, PrimaryColumn, JoinColumn, OneToOne, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryColumn, JoinColumn, ManyToOne, BaseEntity } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity('repository')
@@ -7,13 +7,12 @@ export class Repository extends BaseEntity {
   @PrimaryColumn()
   id: number;
 
-  //one-to-one relationship with user
-  @JoinColumn({ name: 'owner_id' })
-  @OneToOne(() => User, (user) => user.repository)
-  owner: User; //owner.id
-
-  @Column()
-  owner_id: number;
+  @Column({ type: 'int4' })
+  owner: number;
+  //a repository can have a relationship with only one user
+  @ManyToOne(() => User, (user) => user.repository)
+  @JoinColumn({ name: 'owner' }) //has to foreign key, use it only at on side
+  owner_id: User; //owner.id
 
   @Column({ type: 'varchar', length: 255 })
   full_name: string;
