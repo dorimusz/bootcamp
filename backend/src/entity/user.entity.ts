@@ -1,5 +1,6 @@
 import { Entity, Column, OneToMany, PrimaryColumn, BaseEntity } from 'typeorm';
 import { Repository } from './repository.entity';
+import { Contribution } from './contribution.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -22,5 +23,8 @@ export class User extends BaseEntity {
   @OneToMany(() => Repository, (repository) => repository.owner, {
     onDelete: 'NO ACTION', //if repository is deleted, don't do anything
   })
-  repository: Repository;
+  repository: Repository[];
+
+  @OneToMany(() => Contribution, (contribution) => contribution.user)
+  contribution: Contribution[]; // array or not?
 }
