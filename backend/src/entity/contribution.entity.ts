@@ -1,10 +1,16 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Repository } from './repository.entity';
+import { User } from './user.entity';
 
 @Entity('contribution')
 export class Contribution {
   @PrimaryColumn({ type: 'int4' })
-  user: number;
+  @ManyToOne(() => User, (user) => user.contribution)
+  user: User;
 
   @Column({ type: 'int4' })
-  repository: number;
+  @ManyToOne(() => Repository, (repository) => repository.contributions)
+  repository: Repository; //repository.id
 }
+
+// this table should be a joint table at the middle
