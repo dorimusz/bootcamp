@@ -1,5 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-import { Entity, Column, PrimaryColumn, JoinColumn, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { Contribution } from './contribution.entity';
 
@@ -16,6 +16,7 @@ export class Repository extends BaseEntity {
   // @JoinColumn({ name: 'owner' }) //has the foreign key, use it only at on side - optional, ha mas propertyvel kell
   // ownerId: User; //owner.id    owner es ownerId elnevezesek???
 
+  @Index('name-idx')
   @Column({ type: 'varchar', length: 255 })
   full_name: string;
 

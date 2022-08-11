@@ -1,4 +1,11 @@
-import { Entity, Column, OneToMany, PrimaryColumn, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  PrimaryColumn,
+  Index,
+  BaseEntity,
+} from 'typeorm';
 import { Repository } from './repository.entity';
 import { Contribution } from './contribution.entity';
 
@@ -7,6 +14,7 @@ export class User extends BaseEntity {
   @PrimaryColumn({ type: 'int4' })
   id: number; //owner.id
 
+  @Index('login-idx')
   @Column({ type: 'varchar', length: 255 })
   login: string;
 
