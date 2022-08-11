@@ -12,8 +12,12 @@ const config: TypeOrmModuleOptions = {
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB_NAME,
   entities: [User, Repository, Contribution],
-  // migrations: ['src/migration/**/*.ts'],
-  synchronize: true, // might be true for development only - false for production, can cause data loss
+  migrations: ['./migrations/*.ts'],
+  synchronize: false, // might be true for development only - false for production, can cause data loss
+  // cli: {
+  //   entitiesDir: 'src/entity',
+  //   migrationsDir: 'src/migration',
+  // }
 };
 
 export default config;
