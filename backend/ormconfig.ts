@@ -14,10 +14,18 @@ const config: TypeOrmModuleOptions = {
   entities: [User, Repository, Contribution],
   migrations: ['./migrations/*.ts'],
   synchronize: false, // might be true for development only - false for production, can cause data loss
-  // cli: {
-  //   entitiesDir: 'src/entity',
-  //   migrationsDir: 'src/migration',
-  // }
 };
 
 export default config;
+
+/*
+dataSource needed because of typeorm migrations, which are not part of the app module. app module contains this config file
+
+if ormcomnfig is a .json file, which is imported by the app module can add:
+    cli: {
+      entitiesDir: 'src/entity',
+      migrationsDir: 'src/migration',
+      subscribersDir: 'src/subscriber',
+    }
+however the TypeOrmModuleOptions class does not have a cli property, so we need to add it manually
+*/
