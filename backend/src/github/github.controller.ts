@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { GithubService } from './github.service';
 @Controller('/sync')
 export class GithubController {
@@ -6,11 +6,6 @@ export class GithubController {
 
   @Get()
   getRepo(): Promise<any> {
-    return this.githubService.getRepo();
-  }
-
-  @Post()
-  create(): string {
-    return ' create repo';
+    return this.githubService.getData();
   }
 }
