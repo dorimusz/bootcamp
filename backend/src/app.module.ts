@@ -15,8 +15,8 @@ import { RepositoryModule } from './repository/repository.module';
 import { ContributionModule } from './contribution/contribution.module';
 @Module({
   imports: [
-    TypeOrmModule.forRoot(config),
-    TypeOrmModule.forFeature([Repository, User, Contribution]),
+    TypeOrmModule.forRoot(config), //sets up the connection to the database
+    TypeOrmModule.forFeature([Repository, User, Contribution]), //forFeature is used to register entities, creates a dynamic provider that has it's own injection token
     GithubModule,
     UserModule,
     RepositoryModule,

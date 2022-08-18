@@ -29,6 +29,7 @@
     "@nestjs/typeorm": "^9.0.0",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
+    "flatted": "^3.2.6",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
