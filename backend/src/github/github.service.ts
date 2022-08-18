@@ -10,12 +10,6 @@ import { Repository as RepositoryEntity } from '../entity/repository.entity';
 import { User as UserEntity } from '../entity/user.entity';
 import { Contribution as ContributionEntity } from '../entity/contribution.entity';
 import { stringify } from 'flatted';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-
-type GithubRepoResponse = {
-  data: RepositoryDto[];
-};
 
 const headers = {
   Authorization: `Token ${process.env.GITHUB_TOKEN}`,
@@ -38,6 +32,7 @@ export class GithubService {
     //   GET request to Github API to get all repositories and users
 
     let response;
+    // let commits;
     try {
       response = await this.httpService.axiosRef.get(
         'https://api.github.com/users/instagram/repos',
@@ -45,10 +40,22 @@ export class GithubService {
           headers: headers,
         },
       );
+      //   console.log(response.data[0].commit);
     } catch (error) {
       console.log(error);
     }
-    console.log(response.data[0].owner);
+
+    //   GET request to Github API to get commits for each repository
+    const commits = await Promise.all(
+      await response.data.map((repo) => {
+        const url = repo.commits_url;
+        const commitUrl = url.replace('{/sha}', '');
+        // console.log(typeof commitUrl);
+        return this.httpService.axiosRef.get(commitUrl, { headers: headers });
+      }),
+    );
+    // console.log(response.data[0].owner);
+    console.log('COMMITS: ' + stringify(commits[0])); //ITT HAGYTAD ABBA
 
     //   Populate repositories and users into database - ????
     const owner: Array<UserEntity> = response.data.map((repo) => {
@@ -72,7 +79,13 @@ export class GithubService {
         stargazer_count: repo.stargazers_count,
       };
     });
-    console.log('repos' + repos);
+
+    // console.log('repos' + repos);
+
+    // console.log(response.data[0].owner);
+    // console.log(typeof response.data[0].commits_url);
+
+    //TRANSACTIONS!!!! https://www.darraghoriordan.com/2022/06/13/persistence-6-typeorm-postgres-transactions/
     // await this.userRepository.save(owner);
     // await this.repositoryRepository.save(repos);
   }
