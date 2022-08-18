@@ -2,11 +2,12 @@ import { Controller, Get } from '@nestjs/common';
 import { GithubService } from './github.service';
 @Controller('/sync')
 export class GithubController {
-  // constructor(private readonly githubService: GithubService) {}
-  constructor(private githubService: GithubService) {}
+  //readonly - set in constructor, cannot be changed or at least no need to modify later on
+  //private - only accessible in this class
+  constructor(private readonly githubService: GithubService) {}
 
   @Get()
-  getRepo(): Promise<any> {
-    return this.githubService.getData();
+  fillUpDatabase(): Promise<any> {
+    return this.githubService.populateDatabase();
   }
 }
