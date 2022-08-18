@@ -1,5 +1,13 @@
 // eslint-disable-next-line prettier/prettier
-import { Entity, Column, PrimaryColumn, Index, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  Index,
+  ManyToOne,
+  BaseEntity,
+  OneToMany,
+} from 'typeorm';
 import { User } from './user.entity';
 import { Contribution } from './contribution.entity';
 
@@ -17,19 +25,19 @@ export class Repository extends BaseEntity {
   // ownerId: User; //owner.id    owner es ownerId elnevezesek???
 
   @Index('name-idx')
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   full_name: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   description: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   html_url: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   language: string;
 
-  @Column({ type: 'int4' })
+  @Column({ type: 'int4', nullable: true })
   stargazer_count: number;
 
   @OneToMany(() => Contribution, (contribution) => contribution.repository)

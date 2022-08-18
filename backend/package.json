@@ -19,7 +19,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "typeorm-ts-node-esm migration:generate ./src/migrations/update-post-table -d ./src/app-data-source.ts",
+    "migration:up": "typeorm-ts-node-commonjs migration:run -d ./src/app-data-source.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^0.1.0",

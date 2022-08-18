@@ -15,16 +15,16 @@ export class User extends BaseEntity {
   id: number; //owner.id
 
   @Index('login-idx')
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   login: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   avatar_url: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   html_url: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', nullable: true })
   type: string;
 
   //a user can have more than one repository, so it's a one-to-many relationship??
@@ -34,5 +34,5 @@ export class User extends BaseEntity {
   repository: Repository[];
 
   @OneToMany(() => Contribution, (contribution) => contribution.user)
-  contribution: Contribution[]; // array or not?
+  contribution: Contribution; // array or not?
 }
