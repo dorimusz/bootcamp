@@ -4,12 +4,12 @@ import { HttpService } from '@nestjs/axios';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { RepositoryDto } from '../repository/dto/repository.dto'; //service needs interfaces
+// import { RepositoryDto } from '../repository/dto/repository.dto'; //service needs interfaces
 
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
 import { User as UserEntity } from '../entity/user.entity';
 import { Contribution as ContributionEntity } from '../entity/contribution.entity';
-import { stringify } from 'flatted';
+// import { stringify, parse, toJSON, fromJSON } from 'flatted';
 
 const headers = {
   Authorization: `Token ${process.env.GITHUB_TOKEN}`,
@@ -29,13 +29,32 @@ export class GithubService {
   ) {}
 
   async populateDatabase(): Promise<any> {
-    //   GET request to Github API to get all repositories and users
+    const getCommits = (commits) => {
+      commits.map((commit) =>
+        commit.data.forEach((oneCommit) => {
+          //   console.log('@@ihh', oneCommit.author);
+          if (oneCommit.author?.id != null) {
+            console.log(oneCommit.author.id);
+            return oneCommit.author;
+            // return <UserEntity>{
+            //   id: oneCommit.author.id,
+            //   login: oneCommit.author.login,
+            //   avatar_url: oneCommit.author.avatar_url,
+            //   html_url: oneCommit.author.html_url,
+            //   type: oneCommit.author.type,
+            // };
+          } else {
+            // console.log('no author');
+          }
+        }),
+      );
+    };
 
+    //   GET request to Github API to get all repositories and users
     let response;
-    // let commits;
     try {
       response = await this.httpService.axiosRef.get(
-        'https://api.github.com/users/instagram/repos',
+        'https://api.github.com/users/instagram/repos?page=1&per_page=3',
         {
           headers: headers,
         },
@@ -45,19 +64,22 @@ export class GithubService {
       console.log(error);
     }
 
-    //   GET request to Github API to get commits for each repository
+    //   GET request to Github API to get commits and related users (committers)for each repository
     const commits = await Promise.all(
-      await response.data.map((repo) => {
+      response.data.map((repo) => {
         const url = repo.commits_url;
         const commitUrl = url.replace('{/sha}', '');
-        // console.log(typeof commitUrl);
-        return this.httpService.axiosRef.get(commitUrl, { headers: headers });
+        // console.log(commitUrl);
+        const res = this.httpService.axiosRef.get(commitUrl, {
+          headers: headers,
+        });
+        // console.log('first', res); //pending promise
+        return res;
       }),
-    );
-    // console.log(response.data[0].owner);
-    console.log('COMMITS: ' + stringify(commits[0])); //ITT HAGYTAD ABBA
+    ).then((res) => console.log('AAA', getCommits(res)));
 
-    //   Populate repositories and users into database - ????
+    console.log('@@commits ', commits);
+
     const owner: Array<UserEntity> = response.data.map((repo) => {
       return <UserEntity>{
         id: repo.owner.id,
@@ -67,6 +89,7 @@ export class GithubService {
         type: repo.owner.type,
       };
     });
+    console.log('@@owner', owner);
 
     const repos: Array<RepositoryEntity> = response.data.map((repo) => {
       return <RepositoryEntity>{
@@ -79,6 +102,8 @@ export class GithubService {
         stargazer_count: repo.stargazers_count,
       };
     });
+
+    // const contributions: Array<ContributionEntity> = commits.map((commit) => {
 
     // console.log('repos' + repos);
 
