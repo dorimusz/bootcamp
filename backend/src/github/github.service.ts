@@ -28,93 +28,159 @@ export class GithubService {
     private readonly contributionRepository: Repository<ContributionEntity>,
   ) {}
 
-  async populateDatabase(): Promise<any> {
-    const getCommits = (commits) => {
-      commits.map((commit) =>
-        commit.data.forEach((oneCommit) => {
-          //   console.log('@@ihh', oneCommit.author);
-          if (oneCommit.author?.id != null) {
-            console.log(oneCommit.author.id);
-            return oneCommit.author;
-            // return <UserEntity>{
-            //   id: oneCommit.author.id,
-            //   login: oneCommit.author.login,
-            //   avatar_url: oneCommit.author.avatar_url,
-            //   html_url: oneCommit.author.html_url,
-            //   type: oneCommit.author.type,
-            // };
-          } else {
-            // console.log('no author');
-          }
-        }),
-      );
-    };
+  private config = {
+    headers: { Authorization: `Token ${process.env.GITHUB_TOKEN}` },
+  };
 
-    //   GET request to Github API to get all repositories and users
-    let response;
+  async fetchRepo(): Promise<any> {
     try {
-      response = await this.httpService.axiosRef.get(
+      return await this.httpService.axiosRef.get(
         'https://api.github.com/users/instagram/repos?page=1&per_page=3',
-        {
-          headers: headers,
-        },
+        this.config,
       );
       //   console.log(response.data[0].commit);
     } catch (error) {
       console.log(error);
     }
+  }
 
-    //   GET request to Github API to get commits and related users (committers)for each repository
-    const commits = await Promise.all(
-      response.data.map((repo) => {
-        const url = repo.commits_url;
-        const commitUrl = url.replace('{/sha}', '');
-        // console.log(commitUrl);
-        const res = this.httpService.axiosRef.get(commitUrl, {
-          headers: headers,
-        });
-        // console.log('first', res); //pending promise
-        return res;
+  async fetchContributors(data): Promise<any> {
+    return await Promise.all(
+      data.map((repository) => {
+        return this.httpService.axiosRef.get(
+          repository.contributors_url,
+          this.config,
+        );
       }),
-    ).then((res) => console.log('AAA', getCommits(res)));
+    );
+  }
 
-    console.log('@@commits ', commits);
-
-    const owner: Array<UserEntity> = response.data.map((repo) => {
+  //repo.owner
+  buildUser(data: any): UserEntity[] {
+    return data.map((repo) => {
       return <UserEntity>{
-        id: repo.owner.id,
-        login: repo.owner.login,
-        avatar_url: repo.owner.avatar_url,
-        html_url: repo.owner.html_url,
-        type: repo.owner.type,
-      };
-    });
-    console.log('@@owner', owner);
-
-    const repos: Array<RepositoryEntity> = response.data.map((repo) => {
-      return <RepositoryEntity>{
         id: repo.id,
-        owner: repo.owner.id,
-        full_name: repo.full_name,
-        description: repo.description,
+        login: repo.login,
+        avatar_url: repo.avatar_url,
         html_url: repo.html_url,
-        language: repo.language,
-        stargazer_count: repo.stargazers_count,
+        type: repo.type,
       };
     });
+  }
 
-    // const contributions: Array<ContributionEntity> = commits.map((commit) => {
+  buildRepository(data: any): RepositoryEntity {
+    return data.map((repository) => {
+      return <RepositoryEntity>{
+        id: repository.id,
+        owner: repository.owner.id,
+        full_name: repository.full_name,
+        description: repository.description,
+        html_url: repository.html_url,
+        language: repository.language,
+        stargazer_count: repository.stargazers_count,
+      };
+    });
+  }
+  async syncDatabase(): Promise<any> {
+    const response = await this.fetchRepo();
+    const contributions = await this.fetchContributors(response.data); //array
 
-    // console.log('repos' + repos);
+    const contributors = [];
+    contributions.forEach((contribution) => {
+      contributors.push(...contribution.data);
+    });
 
-    // console.log(response.data[0].owner);
-    // console.log(typeof response.data[0].commits_url);
+    const usersConts = this.buildUser(contributors);
+    const repositories = this.buildRepository(response.data);
+    // console.log('@@repo', repositories);
+    console.log('@@', usersConts);
 
-    //TRANSACTIONS!!!! https://www.darraghoriordan.com/2022/06/13/persistence-6-typeorm-postgres-transactions/
-    // await this.userRepository.save(owner);
-    // await this.repositoryRepository.save(repos);
+    // await this.repositoryRepository.save(repositories);
+    // await this.userRepository.save(usersConts);
   }
 }
+
+/* CONTRIBUTION 
+buildContribution(data: any): ContributionEntity {
+    
+}
+*/
+
+//   async populateDatabase(): Promise<any> {
+//     const getCommits = (commits) => {
+//       commits.map((commit) =>
+//         commit.data.forEach((oneCommit) => {
+//           //   console.log('@@ihh', oneCommit.author);
+//           if (oneCommit.author?.id != null) {
+//             console.log(oneCommit.author.id);
+//             return oneCommit.author;
+//             // return <UserEntity>{
+//             //   id: oneCommit.author.id,
+//             //   login: oneCommit.author.login,
+//             //   avatar_url: oneCommit.author.avatar_url,
+//             //   html_url: oneCommit.author.html_url,
+//             //   type: oneCommit.author.type,
+//             // };
+//           } else {
+//             // console.log('no author');
+//           }
+//         }),
+//       );
+//     };
+
+//   GET request to Github API to get all repositories and users
+// let response = await this.fetchRepo(); //TODO
+
+//   GET request to Github API to get commits and related users (committers)for each repository
+// const commits = await Promise.all(
+//   response.data.map((repo) => {
+//     const url = repo.commits_url;
+//     const commitUrl = url.replace('{/sha}', '');
+//     // console.log(commitUrl);
+//     const res = this.httpService.axiosRef.get(commitUrl, {
+//       headers: headers,
+//     });
+//     // console.log('first', res); //pending promise
+//     return res;
+//   }),
+// ).then((res) => console.log('AAA', getCommits(res)));
+
+// console.log('@@commits ', commits);
+
+// const owner: Array<UserEntity> = response.data.map((repo) => {
+//   return <UserEntity>{
+//     id: repo.owner.id,
+//     login: repo.owner.login,
+//     avatar_url: repo.owner.avatar_url,
+//     html_url: repo.owner.html_url,
+//     type: repo.owner.type,
+//   };
+// });
+// console.log('@@owner', owner);
+
+// const repos: Array<RepositoryEntity> = response.data.map((repo) => {
+//   return <RepositoryEntity>{
+//     id: repo.id,
+//     owner: repo.owner.id,
+//     full_name: repo.full_name,
+//     description: repo.description,
+//     html_url: repo.html_url,
+//     language: repo.language,
+//     stargazer_count: repo.stargazers_count,
+//   };
+// });
+
+// const contributions: Array<ContributionEntity> = commits.map((commit) => {
+
+// console.log('repos' + repos);
+
+// console.log(response.data[0].owner);
+// console.log(typeof response.data[0].commits_url);
+
+//TRANSACTIONS!!!! https://www.darraghoriordan.com/2022/06/13/persistence-6-typeorm-postgres-transactions/
+//TRANSACTIONS!!!! https://orkhan.gitbook.io/typeorm/docs/transactions
+// await this.userRepository.save(owner);
+// await this.repositoryRepository.save(repos);
 
 /*
     let repositories;

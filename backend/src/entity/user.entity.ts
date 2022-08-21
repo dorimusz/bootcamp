@@ -5,6 +5,7 @@ import {
   PrimaryColumn,
   Index,
   BaseEntity,
+  JoinTable,
 } from 'typeorm';
 import { Repository } from './repository.entity';
 import { Contribution } from './contribution.entity';
@@ -31,6 +32,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Repository, (repository) => repository.owner, {
     onDelete: 'NO ACTION', //if repository is deleted, don't do anything
   })
+  @JoinTable()
   repository: Repository[];
 
   @OneToMany(() => Contribution, (contribution) => contribution.user)

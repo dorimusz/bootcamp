@@ -8,6 +8,6 @@ export class GithubController {
 
   @Get()
   fillUpDatabase(): Promise<any> {
-    return this.githubService.populateDatabase();
+    return this.githubService.syncDatabase();
   }
 }
