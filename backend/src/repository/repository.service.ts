@@ -10,7 +10,14 @@ export class RepositoryService {
     private readonly repositoryRepository: Repository<RepositoryEntity>,
   ) {}
 
-  getAllRepos(): Promise<RepositoryEntity[]> {
-    return this.repositoryRepository.find();
+  async getAllRepos(): Promise<RepositoryEntity[]> {
+    return await this.repositoryRepository.find();
+  }
+
+  async getRepoById(id): Promise<RepositoryEntity> {
+    console.log('@@ID', id);
+    return await this.repositoryRepository.findOne({
+      where: { id },
+    }); // w type number it has a problem
   }
 }
