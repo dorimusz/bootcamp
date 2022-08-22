@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { RepositoryService } from './repository.service';
 
-@Controller('repository')
-export class RepositoryController {}
+@Controller('/repository')
+export class RepositoryController {
+  constructor(private readonly repositoryService: RepositoryService) {}
+
+  @Get()
+  getHello(): string {
+    return this.repositoryService.getHello();
+  }
+}
