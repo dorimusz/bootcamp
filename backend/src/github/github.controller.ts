@@ -7,7 +7,7 @@ export class GithubController {
   constructor(private readonly githubService: GithubService) {}
 
   @Get()
-  fillUpDatabase(): Promise<any> {
+  populateDatabase(): Promise<any> {
     return this.githubService.syncDatabase();
   }
 }

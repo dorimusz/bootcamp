@@ -122,7 +122,7 @@ export class GithubService {
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    // console.log('assSSSSSSSSSSSSd');
+    console.log('Database is synced successfully');
   }
 }
 
