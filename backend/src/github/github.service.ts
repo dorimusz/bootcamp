@@ -1,5 +1,4 @@
-import { Injectable, HttpException } from '@nestjs/common';
-import http, { AxiosResponse } from 'axios';
+import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,9 +7,6 @@ import { Repository as RepositoryEntity } from '../entity/repository.entity';
 import { User as UserEntity } from '../entity/user.entity';
 import { Contribution as ContributionEntity } from '../entity/contribution.entity';
 
-// const headers = {
-//   Authorization: `Token ${process.env.GITHUB_TOKEN}`,
-// };
 @Injectable()
 export class GithubService {
   // constructor a dependencyknek (modulok, classok stb) -  pl userrepository, hasznalhato lest pl insert fuggveny
@@ -32,7 +28,7 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        'https://api.github.com/users/instagram/repos?page=1&per_page=10',
+        'https://api.github.com/users/instagram/repos?page=1&per_page=2',
         // 'https://api.github.com/users/instagram/repos',
         this.config,
       );
@@ -92,6 +88,23 @@ export class GithubService {
     });
   }
 
+  buildContribution(
+    repositories: any,
+    contributors: any,
+  ): ContributionEntity[] {
+    return repositories.map((repository) => {
+      //   console.log('@@@REPOSITORY', repository);
+      return contributors.map((contributor) => {
+        // console.log('@@@CONTRIBUTOR', contributor);
+        return <ContributionEntity>{
+          id: contributor.id,
+          repository: repository.id,
+          //   commitCount: contributor.contributions,
+        };
+      });
+    });
+  }
+
   removeDuplicates(userArray: any): any {
     return userArray.filter(
       (value, index, self) =>
@@ -102,6 +115,7 @@ export class GithubService {
   async syncDatabase(): Promise<any> {
     const response = await this.fetchRepo();
     const contributions = await this.fetchContributors(response.data); //array
+    console.log('@@@', contributions);
 
     const contributors = [];
     contributions.forEach((contribution) => {
@@ -109,19 +123,21 @@ export class GithubService {
     });
 
     const usersContsArray = this.buildUser(contributors); //contributors only
-    const usersConts = this.removeDuplicates(usersContsArray);
+    // const usersConts = this.removeDuplicates(usersContsArray); //no need for this
     const ownersArray = this.buildOwner(response.data); //all owners, contains duplicates
     const owners = this.removeDuplicates(ownersArray);
-    // console.log('@@OWNERS', owners);
-    const users = [...usersConts, ...owners];
+    const users = [...usersContsArray, ...owners];
     const repositories = this.buildRepository(response.data);
+    const contributs = this.buildContribution(response.data, usersContsArray); //
+    console.log('@@OCONTRIBUTS', contributs);
 
     // console.log([...usersConts, ...owners]);
     // console.log('@@repo', repositories);
     // console.log('@@', usersConts);
 
-    await this.userRepository.save(users);
-    await this.repositoryRepository.save(repositories);
+    // await this.userRepository.save(users);
+    // await this.repositoryRepository.save(repositories);
+    // await this.contributionRepository.save(contributs);
     console.log('Database is synced successfully');
   }
 }

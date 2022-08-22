@@ -39,6 +39,6 @@ export class User extends BaseEntity {
   @JoinTable()
   repositories: Repository[];
 
-  //   @OneToMany(() => Contribution, (contribution) => contribution.user)
-  //   contribution: Contribution; // array or not?
+  @OneToMany(() => Contribution, (contribution) => contribution.user)
+  contribution: Contribution; // array or not?
 }

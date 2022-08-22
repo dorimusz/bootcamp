@@ -46,6 +46,6 @@ export class Repository extends BaseEntity {
   @ManyToMany(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
   users: User[];
 
-  // @OneToMany(() => Contribution, (contribution) => contribution.repository)
-  // contributions: Contribution[];
+  @OneToMany(() => Contribution, (contribution) => contribution.repository)
+  contributions: Contribution[];
 }
