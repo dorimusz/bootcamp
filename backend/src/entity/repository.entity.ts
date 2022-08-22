@@ -7,6 +7,8 @@ import {
   ManyToOne,
   BaseEntity,
   OneToMany,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Contribution } from './contribution.entity';
@@ -17,8 +19,9 @@ export class Repository extends BaseEntity {
   id: number;
 
   @Column({ type: 'int4' })
-  @ManyToOne(() => User, (user) => user.repository, { onDelete: 'SET NULL' }) //if user is deleted, set ownerid to null
-  owner: User;
+  @ManyToOne(() => User, (user) => user.id, { onDelete: 'SET NULL' }) //if user is deleted, set ownerid to null
+  // @JoinTable()
+  owner: number;
   // owner: number;
   //a repository can have a relationship with only one user
   // @JoinColumn({ name: 'owner' }) //has the foreign key, use it only at on side - optional, ha mas propertyvel kell
@@ -40,6 +43,9 @@ export class Repository extends BaseEntity {
   @Column({ type: 'int4', nullable: true })
   stargazer_count: number;
 
-  @OneToMany(() => Contribution, (contribution) => contribution.repository)
-  contributions: Contribution[];
+  @ManyToMany(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
+  users: User[];
+
+  // @OneToMany(() => Contribution, (contribution) => contribution.repository)
+  // contributions: Contribution[];
 }
