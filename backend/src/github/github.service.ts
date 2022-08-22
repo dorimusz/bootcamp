@@ -4,16 +4,13 @@ import { HttpService } from '@nestjs/axios';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-// import { RepositoryDto } from '../repository/dto/repository.dto'; //service needs interfaces
-
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
 import { User as UserEntity } from '../entity/user.entity';
 import { Contribution as ContributionEntity } from '../entity/contribution.entity';
-// import { stringify, parse, toJSON, fromJSON } from 'flatted';
 
-const headers = {
-  Authorization: `Token ${process.env.GITHUB_TOKEN}`,
-};
+// const headers = {
+//   Authorization: `Token ${process.env.GITHUB_TOKEN}`,
+// };
 @Injectable()
 export class GithubService {
   // constructor a dependencyknek (modulok, classok stb) -  pl userrepository, hasznalhato lest pl insert fuggveny
@@ -35,7 +32,8 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        'https://api.github.com/users/instagram/repos?page=1&per_page=3',
+        'https://api.github.com/users/instagram/repos?page=1&per_page=10',
+        // 'https://api.github.com/users/instagram/repos',
         this.config,
       );
       //   console.log(response.data[0].commit);
@@ -55,7 +53,6 @@ export class GithubService {
     );
   }
 
-  //repo.owner
   buildUser(data: any): UserEntity[] {
     return data.map((repo) => {
       return <UserEntity>{
@@ -68,8 +65,21 @@ export class GithubService {
     });
   }
 
+  buildOwner(data: any): UserEntity[] {
+    return data.map((repo) => {
+      return <UserEntity>{
+        id: repo.owner.id,
+        login: repo.owner.login,
+        avatar_url: repo.owner.avatar_url,
+        html_url: repo.owner.html_url,
+        type: repo.owner.type,
+      };
+    });
+  }
+
   buildRepository(data: any): RepositoryEntity {
     return data.map((repository) => {
+      //   console.log('@@OWNER', repository.owner);
       return <RepositoryEntity>{
         id: repository.id,
         owner: repository.owner.id,
@@ -81,6 +91,14 @@ export class GithubService {
       };
     });
   }
+
+  removeDuplicates(userArray: any): any {
+    return userArray.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t.id === value.id),
+    );
+  }
+
   async syncDatabase(): Promise<any> {
     const response = await this.fetchRepo();
     const contributions = await this.fetchContributors(response.data); //array
@@ -90,13 +108,21 @@ export class GithubService {
       contributors.push(...contribution.data);
     });
 
-    const usersConts = this.buildUser(contributors);
+    const usersContsArray = this.buildUser(contributors); //contributors only
+    const usersConts = this.removeDuplicates(usersContsArray);
+    const ownersArray = this.buildOwner(response.data); //all owners, contains duplicates
+    const owners = this.removeDuplicates(ownersArray);
+    // console.log('@@OWNERS', owners);
+    const users = [...usersConts, ...owners];
     const repositories = this.buildRepository(response.data);
-    // console.log('@@repo', repositories);
-    console.log('@@', usersConts);
 
-    // await this.repositoryRepository.save(repositories);
-    // await this.userRepository.save(usersConts);
+    // console.log([...usersConts, ...owners]);
+    // console.log('@@repo', repositories);
+    // console.log('@@', usersConts);
+
+    await this.userRepository.save(users);
+    await this.repositoryRepository.save(repositories);
+    // console.log('assSSSSSSSSSSSSd');
   }
 }
 
