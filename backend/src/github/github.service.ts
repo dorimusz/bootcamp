@@ -88,21 +88,19 @@ export class GithubService {
     });
   }
 
-  /*
   buildContribution(repositories: any, contributors: any): ContributionEntity {
     return repositories.map((repository) => {
       //   console.log('@@@REPOSITORY', repository);
       return contributors.map((contributor) => {
         // console.log('@@@CONTRIBUTOR', contributor.id);
         return <ContributionEntity>{
-          id: contributor.id,
+          userId: contributor.id,
           repository: repository.id,
-          //   commitCount: contributor.contributions,
+          // commitCount: contributor.contributions,
         };
       });
     });
   }
-  */
 
   removeDuplicates(userArray: any): any {
     return userArray.filter(
@@ -114,7 +112,7 @@ export class GithubService {
   async syncDatabase(): Promise<any> {
     const response = await this.fetchRepo();
     const contributions = await this.fetchContributors(response.data); //array
-    console.log('@@@', contributions);
+    // console.log('@@@', contributions);
 
     const contributors = [];
     contributions.forEach((contribution) => {
@@ -127,16 +125,16 @@ export class GithubService {
     const owners = this.removeDuplicates(ownersArray);
     const users = [...usersContsArray, ...owners];
     const repositories = this.buildRepository(response.data);
-    // const contributs = this.buildContribution(response.data, usersContsArray);
+    const contributs = this.buildContribution(response.data, usersContsArray);
 
     // console.log('@@CONTRIBUTS', contributs);
     // console.log([...usersConts, ...owners]);
     // console.log('@@repo', repositories);
-    // console.log('@@', usersConts);
+    console.log('@@', users);
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    // await this.contributionRepository.save(contributs);
+    await this.contributionRepository.save(contributs);
     console.log('Database is synced successfully');
   }
 }
