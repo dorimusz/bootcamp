@@ -43,8 +43,8 @@ export class Repository extends BaseEntity {
   @Column({ type: 'int4', nullable: true })
   stargazer_count: number;
 
-  @ManyToMany(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
-  users: User[];
+  // @ManyToMany(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
+  // users: User[];
 
   @OneToMany(() => Contribution, (contribution) => contribution.repository)
   contributions: Contribution[];

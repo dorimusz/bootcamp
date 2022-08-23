@@ -33,10 +33,9 @@ export class User extends BaseEntity {
   type: string;
 
   //a user can have more than one repository, so it's a one-to-many relationship??
-  @ManyToMany(() => Repository, (repository) => repository.users, {
+  @OneToMany(() => Repository, (repository) => repository.owner, {
     onDelete: 'NO ACTION', //if repository is deleted, don't do anything
   })
-  @JoinTable()
   repositories: Repository[];
 
   @OneToMany(() => Contribution, (contribution) => contribution.user)
