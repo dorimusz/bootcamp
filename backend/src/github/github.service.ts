@@ -28,7 +28,7 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        'https://api.github.com/users/instagram/repos?page=1&per_page=2',
+        'https://api.github.com/users/facebook/repos?page=1&per_page=2',
         // 'https://api.github.com/users/instagram/repos',
         this.config,
       );
@@ -61,6 +61,15 @@ export class GithubService {
     });
   }
 
+  buildContributors(data: any): ContributionEntity[] {
+    return data.map((contributor) => {
+      return <ContributionEntity>{
+        userId: contributor.userId,
+        repositoryId: contributor.repositoryId,
+      };
+    });
+  }
+
   buildOwner(data: any): UserEntity[] {
     return data.map((repo) => {
       return <UserEntity>{
@@ -88,24 +97,28 @@ export class GithubService {
     });
   }
 
-  buildContribution(repositories: any, contributors: any): ContributionEntity {
-    return repositories.map((repository) => {
-      //   console.log('@@@REPOSITORY', repository);
-      return contributors.map((contributor) => {
-        // console.log('@@@CONTRIBUTOR', contributor.id);
-        return <ContributionEntity>{
-          userId: contributor.id,
-          repository: repository.id,
-          // commitCount: contributor.contributions,
-        };
-      });
-    });
-  }
-
   removeDuplicates(userArray: any): any {
     return userArray.filter(
       (value, index, self) =>
         index === self.findIndex((t) => t.id === value.id),
+    );
+  }
+
+  async getContributorData(response) {
+    return await Promise.all(
+      response.data.map(async (repos, index) => {
+        const contributions = await this.httpService.axiosRef.get(
+          response.data[index].contributors_url,
+          this.config,
+        );
+
+        return contributions.data.map((contributor) => {
+          return {
+            repositoryId: repos.id,
+            userId: contributor.id,
+          };
+        });
+      }),
     );
   }
 
@@ -114,27 +127,30 @@ export class GithubService {
     const contributions = await this.fetchContributors(response.data); //array
     // console.log('@@@', contributions);
 
+    // console.log(await this.getContributorData(response).flat());
+    const contributes = await this.getContributorData(response);
+
     const contributors = [];
     contributions.forEach((contribution) => {
       contributors.push(...contribution.data);
     });
 
     const usersContsArray = this.buildUser(contributors); //contributors only
-    // const usersConts = this.removeDuplicates(usersContsArray); //no need for this
     const ownersArray = this.buildOwner(response.data); //all owners, contains duplicates
     const owners = this.removeDuplicates(ownersArray);
+    const contribute2 = this.buildContributors(contributes.flat());
     const users = [...usersContsArray, ...owners];
     const repositories = this.buildRepository(response.data);
-    const contributs = this.buildContribution(response.data, usersContsArray);
 
     // console.log('@@CONTRIBUTS', contributs);
     // console.log([...usersConts, ...owners]);
     // console.log('@@repo', repositories);
-    console.log('@@', users);
+    // console.log('@@', users);
+    console.log('@@CONTR', contribute2);
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    await this.contributionRepository.save(contributs);
+    await this.contributionRepository.save(contribute2);
     console.log('Database is synced successfully');
   }
 }
