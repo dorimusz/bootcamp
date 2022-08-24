@@ -16,8 +16,8 @@ export class Contribution {
   @JoinColumn()
   repository: Repository; //repository.id
 
-  // @Column({ name: 'commit_count', type: 'int4' })
-  // commitCount: number;
+  @Column({ name: 'commit_count', type: 'int4', nullable: true })
+  commitCount: number;
 }
 
 // this table should be a joint table at the middle

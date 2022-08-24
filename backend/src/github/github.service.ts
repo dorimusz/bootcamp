@@ -66,6 +66,7 @@ export class GithubService {
       return <ContributionEntity>{
         userId: contributor.userId,
         repositoryId: contributor.repositoryId,
+        commitCount: contributor.commitCount,
       };
     });
   }
@@ -116,6 +117,7 @@ export class GithubService {
           return {
             repositoryId: repos.id,
             userId: contributor.id,
+            commitCount: contributor.contributions,
           };
         });
       }),
@@ -127,7 +129,7 @@ export class GithubService {
     const contributions = await this.fetchContributors(response.data); //array
     // console.log('@@@', contributions);
 
-    // console.log(await this.getContributorData(response).flat());
+    //contriubutors and repos for contributor table
     const contributes = await this.getContributorData(response);
 
     const contributors = [];
@@ -138,19 +140,18 @@ export class GithubService {
     const usersContsArray = this.buildUser(contributors); //contributors only
     const ownersArray = this.buildOwner(response.data); //all owners, contains duplicates
     const owners = this.removeDuplicates(ownersArray);
-    const contribute2 = this.buildContributors(contributes.flat());
+    const contributionTableData = this.buildContributors(contributes.flat());
     const users = [...usersContsArray, ...owners];
     const repositories = this.buildRepository(response.data);
 
-    // console.log('@@CONTRIBUTS', contributs);
     // console.log([...usersConts, ...owners]);
-    // console.log('@@repo', repositories);
     // console.log('@@', users);
-    console.log('@@CONTR', contribute2);
+    // console.log('@@repo', repositories);
+    console.log('@@CONTR', contributionTableData);
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    await this.contributionRepository.save(contribute2);
+    await this.contributionRepository.save(contributionTableData);
     console.log('Database is synced successfully');
   }
 }
