@@ -1,30 +1,36 @@
 import winston, { format, transports } from 'winston';
-
 export class LoggerConfig {
   private readonly options: winston.LoggerOptions;
 
   constructor() {
     this.options = {
       exitOnError: false,
-      level: 'info',
-      // level: process.env.LOG_LEVEL || 'info',
+      level: process.env.LOG_LEVEL || 'info',
       format: format.combine(
         format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
+          format: 'YYYY-MM-DD HH:mm:ss', //server timestamp
         }),
         format.errors({ stack: true }),
-        format.json(),
-        format.colorize(),
+        format.json(), //especially in production, we want to log in JSON format
+        format.colorize(), //do not use this in production!!!
+        format.errors({ stack: true }), //logs out the whole error stack
         format.printf(
-          ({ level, message, label, timestamp }) =>
-            `${timestamp} [${label}] ${level}: ${message}`,
+          ({ level, message, timestamp, stack }) =>
+            `${timestamp} [${level}]: ${stack || message}`,
         ),
       ),
-      defaultMeta: { service: 'user-service' },
+      // defaultMeta: { service: 'user-service' }, //not seen in log files, but it's there
       transports: [
-        new transports.Console(),
-        new transports.File({ filename: 'logs/combined.log' }),
+        new transports.Console(), //write everything to console
+        new transports.File({ filename: 'logs/combined.log' }), //store everything in a file
+        new transports.File({ filename: 'logs/error.log', level: 'error' }), //store errors in a separate file
       ],
+      // exceptionHandlers: [
+      //   new transports.File({ filename: 'logs/exception.log' }),
+      // ],
+      // rejectionHandlers: [
+      //   new transports.File({ filename: 'logs/rejections.log' }),
+      // ],
     };
   }
   public console(): object {
