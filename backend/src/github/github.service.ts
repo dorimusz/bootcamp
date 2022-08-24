@@ -28,8 +28,8 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        'https://api.github.com/users/facebook/repos?page=1&per_page=2',
-        // 'https://api.github.com/users/instagram/repos',
+        // 'https://api.github.com/users/facebook/repos?page=1&per_page=2',
+        'https://api.github.com/users/instagram/repos',
         this.config,
       );
       //   console.log(response.data[0].commit);
@@ -52,7 +52,7 @@ export class GithubService {
   buildUser(data: any): UserEntity[] {
     return data.map((repo) => {
       return <UserEntity>{
-        id: repo.id,
+        userId: repo.id,
         login: repo.login,
         avatar_url: repo.avatar_url,
         html_url: repo.html_url,
@@ -74,7 +74,7 @@ export class GithubService {
   buildOwner(data: any): UserEntity[] {
     return data.map((repo) => {
       return <UserEntity>{
-        id: repo.owner.id,
+        userId: repo.owner.id,
         login: repo.owner.login,
         avatar_url: repo.owner.avatar_url,
         html_url: repo.owner.html_url,
@@ -151,7 +151,7 @@ export class GithubService {
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    await this.contributionRepository.save(contributionTableData);
+    // await this.contributionRepository.save(contributionTableData);
     console.log('Database is synced successfully');
   }
 }

@@ -19,7 +19,7 @@ export class Repository extends BaseEntity {
   id: number;
 
   @Column({ type: 'int4' })
-  @ManyToOne(() => User, (user) => user.id, { onDelete: 'SET NULL' }) //if user is deleted, set ownerid to null
+  @ManyToOne(() => User, (user) => user.userId, { onDelete: 'SET NULL' }) //if user is deleted, set ownerid to null
   // @JoinTable()
   owner: number;
   // owner: number;

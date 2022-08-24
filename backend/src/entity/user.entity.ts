@@ -17,7 +17,7 @@ export class User extends BaseEntity {
   @PrimaryColumn({ type: 'int4' })
   // @OneToMany(() => Repository, (repository) => repository.owner)
   // @JoinColumn()
-  id: number; //owner.id
+  userId: number; //owner.id
 
   @Index('login-idx')
   @Column({ type: 'varchar', nullable: true })
