@@ -151,7 +151,7 @@ export class GithubService {
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);
-    // await this.contributionRepository.save(contributionTableData);
+    await this.contributionRepository.save(contributionTableData);
     console.log('Database is synced successfully');
   }
 }
