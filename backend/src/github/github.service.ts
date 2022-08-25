@@ -28,8 +28,8 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        // 'https://api.github.com/users/facebook/repos?page=1&per_page=2',
-        'https://api.github.com/users/instagram/repos',
+        'https://api.github.com/users/facebook/repos?page=1&per_page=10',
+        // 'https://api.github.com/users/instagram/repos',
         this.config,
       );
       //   console.log(response.data[0].commit);
@@ -88,7 +88,7 @@ export class GithubService {
       //   console.log('@@OWNER', repository.owner);
       return <RepositoryEntity>{
         id: repository.id,
-        owner: repository.owner.id,
+        ownerId: repository.owner.id,
         full_name: repository.full_name,
         description: repository.description,
         html_url: repository.html_url,
@@ -146,8 +146,8 @@ export class GithubService {
 
     // console.log([...usersConts, ...owners]);
     // console.log('@@', users);
-    // console.log('@@repo', repositories);
-    console.log('@@CONTR', contributionTableData);
+    console.log('@@repo', repositories);
+    // console.log('@@CONTR', contributionTableData);
 
     await this.userRepository.save(users);
     await this.repositoryRepository.save(repositories);

@@ -8,15 +8,18 @@ import {
   JoinTable,
   ManyToMany,
   JoinColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Repository } from './repository.entity';
 import { Contribution } from './contribution.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
-  @PrimaryColumn({ type: 'int4' })
+  @PrimaryGeneratedColumn({ type: 'int4' })
+  id: number;
   // @OneToMany(() => Repository, (repository) => repository.owner)
   // @JoinColumn()
+  @Column()
   userId: number; //owner.id
 
   @Index('login-idx')
@@ -38,6 +41,8 @@ export class User extends BaseEntity {
   })
   repositories: Repository[];
 
-  @OneToMany(() => Contribution, (contribution) => contribution.user)
+  @OneToMany(() => Contribution, (contribution) => contribution.user, {
+    onDelete: 'NO ACTION',
+  })
   contribution: Contribution; // array or not?
 }
