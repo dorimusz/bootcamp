@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
+import { Contribution as ContributionEntity } from 'src/entity/contribution.entity';
 
 @Injectable()
 export class RepositoryService {
   constructor(
     @InjectRepository(RepositoryEntity)
     private readonly repositoryRepository: Repository<RepositoryEntity>,
+    @InjectRepository(ContributionEntity)
+    private readonly contributionRepository: Repository<ContributionEntity>,
   ) {}
 
   async getAllRepos(): Promise<RepositoryEntity[]> {
@@ -19,5 +22,11 @@ export class RepositoryService {
     return await this.repositoryRepository.findOne({
       where: { id },
     }); // w type number it has a problem
+  }
+
+  async findContributions(id: number): Promise<ContributionEntity[]> {
+    return await this.contributionRepository.find({
+      where: { repositoryId: id },
+    });
   }
 }
