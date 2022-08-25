@@ -14,7 +14,7 @@ export class RepositoryService {
     return await this.repositoryRepository.find();
   }
 
-  async getRepoById(id): Promise<RepositoryEntity> {
+  async getRepoById(id: number): Promise<RepositoryEntity> {
     console.log('@@ID', id);
     return await this.repositoryRepository.findOne({
       where: { id },
