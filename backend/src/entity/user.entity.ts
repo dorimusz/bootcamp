@@ -15,12 +15,10 @@ import { Contribution } from './contribution.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn({ type: 'int4' })
-  id: number;
+  @PrimaryColumn({ type: 'int4' })
+  userId: number;
   // @OneToMany(() => Repository, (repository) => repository.owner)
   // @JoinColumn()
-  @Column()
-  userId: number; //owner.id
 
   @Index('login-idx')
   @Column({ type: 'varchar', nullable: true })

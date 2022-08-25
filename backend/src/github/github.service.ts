@@ -28,7 +28,7 @@ export class GithubService {
   async fetchRepo(): Promise<any> {
     try {
       return await this.httpService.axiosRef.get(
-        'https://api.github.com/users/facebook/repos?page=1&per_page=10',
+        'https://api.github.com/users/instagram/repos?page=1&per_page=10',
         // 'https://api.github.com/users/instagram/repos',
         this.config,
       );
@@ -101,7 +101,7 @@ export class GithubService {
   removeDuplicates(userArray: any): any {
     return userArray.filter(
       (value, index, self) =>
-        index === self.findIndex((t) => t.id === value.id),
+        index === self.findIndex((t) => t.userId === value.userId),
     );
   }
 
@@ -142,14 +142,18 @@ export class GithubService {
     const owners = this.removeDuplicates(ownersArray);
     const contributionTableData = this.buildContributors(contributes.flat());
     const users = [...usersContsArray, ...owners];
+    const usersNotDuplicated = this.removeDuplicates(users);
     const repositories = this.buildRepository(response.data);
 
     // console.log([...usersConts, ...owners]);
-    // console.log('@@', users);
-    console.log('@@repo', repositories);
+    // console.log('@@onwers', owners);
+    // console.log('@@originalOWENERS', ownersArray);
+    // console.log('@@usersConts', usersContsArray);
+    // console.log('@@DUPLICATES REMOVED', usersNotDuplicated);
+    // console.log('@@repo', repositories);
     // console.log('@@CONTR', contributionTableData);
 
-    await this.userRepository.save(users);
+    await this.userRepository.save(usersNotDuplicated);
     await this.repositoryRepository.save(repositories);
     await this.contributionRepository.save(contributionTableData);
     console.log('Database is synced successfully');
