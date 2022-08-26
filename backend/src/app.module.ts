@@ -18,6 +18,7 @@ import { GithubModule } from './github/github.module';
 import { UserModule } from './user/user.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ContributionModule } from './contribution/contribution.module';
+import { ApiResponseModule } from './utils/apiResponse.module';
 
 const logger: LoggerConfig = new LoggerConfig();
 @Module({
@@ -29,6 +30,7 @@ const logger: LoggerConfig = new LoggerConfig();
     UserModule,
     RepositoryModule,
     ContributionModule,
+    ApiResponseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
