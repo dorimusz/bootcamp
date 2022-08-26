@@ -53,7 +53,7 @@ export class RepositoryController {
   ) {
     const contributions = await this.contributionService.findContributions(id);
     console.log(contributions.length);
-    this.apiResponseService.customApiResponseForConts(
+    this.apiResponseService.customApiResponseForArrays(
       res,
       contributions,
       'The repository might not exist.',

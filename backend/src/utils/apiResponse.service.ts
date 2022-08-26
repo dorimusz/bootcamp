@@ -18,7 +18,7 @@ export class ApiResponseService {
     }
   }
 
-  customApiResponseForConts(@Res() res: Response, data, notFoundMsg, elseMsg) {
+  customApiResponseForArrays(@Res() res: Response, data, notFoundMsg, elseMsg) {
     const secondChecker = data.length > 0 || data === null ? true : false; //checks if data is an empty array
     if (secondChecker) {
       res.status(200).send(data);
