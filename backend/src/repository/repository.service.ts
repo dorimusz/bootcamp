@@ -32,10 +32,83 @@ export class RepositoryService {
     });
   }
 
-  async searchRepositories(query: { language: string }) {
-    console.log('@@service', query.language);
-    return await this.repositoryRepository.find({
-      where: { language: query.language },
-    });
+  async searchRepositories(query: {
+    language: string;
+    stargazer_count: number;
+    ownerId: number;
+  }) {
+    console.log('@@query', query);
+    console.log('@@querylang', query.stargazer_count);
+    if (query.language) {
+      return await this.repositoryRepository.find({
+        where: { language: query.language },
+      });
+    }
+    if (query.stargazer_count) {
+      return await this.repositoryRepository.find({
+        where: { stargazer_count: query.stargazer_count },
+      });
+    }
+    if (query.ownerId) {
+      return await this.repositoryRepository.find({
+        where: { ownerId: query.ownerId },
+      });
+
+      // const repoByOwnerId = this.repositoryRepository
+      //   .createQueryBuilder('ownerId')
+      //   .where('repository.ownerId = :ownerId', { ownerId: query.ownerId })
+      //   .getMany();
+
+      // return repoByOwnerId;
+    }
+    // if (
+    //   (query.language && query.stargazer_count) ||
+    //   (query.language && query.ownerId) ||
+    //   (query.stargazer_count && query.ownerId) ||
+    //   (query.language && query.stargazer_count && query.ownerId)
+    // ) {
+    //   return await this.repositoryRepository.find({
+    //     where: {
+    //       language: query.language,
+    //       stargazer_count: query.stargazer_count,
+    //       ownerId: query.ownerId,
+    //     },
+    //   });
+    // }
   }
 }
+
+/*
+async searchRepositories(query: {
+    language?: string;
+    stargazer_count?: number;
+    ownerId?: number;
+    description?: string;
+  }) {
+    console.log('@@service', query.language);
+    if (query.language && query.stargazer_count && query.ownerId) {
+      return await this.repositoryRepository.find({
+        where: {
+          language: query.language,
+          stargazer_count: query.stargazer_count,
+          ownerId: query.ownerId,
+        },
+      });
+    }
+    if (query.language) {
+      return await this.repositoryRepository.find({
+        where: { language: query.language },
+      });
+    }
+    if (query.stargazer_count) {
+      return await this.repositoryRepository.find({
+        where: { stargazer_count: query.stargazer_count },
+      });
+    }
+    if (query.ownerId) {
+      return await this.repositoryRepository.find({
+        where: { ownerId: query.ownerId },
+      });
+    }
+  }
+*/

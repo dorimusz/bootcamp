@@ -26,12 +26,13 @@ export class RepositoryController {
 
   @Get()
   async getRepositories(
-    @Query() query: { language: string },
+    @Query()
+    query: { language: string; stargazer_count: number; ownerId: number },
     @Req() req: Request,
     @Res() res: Response,
   ) {
-    console.log(query); //query.language {language: 'Ruby'}
-    if (query.language) {
+    console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
+    if (query.language || query.stargazer_count || query.ownerId) {
       const queryRepo = await this.repositoryService.searchRepositories(query);
       this.apiResponseService.customApiResponse(
         res,
