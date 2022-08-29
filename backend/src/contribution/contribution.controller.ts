@@ -21,7 +21,7 @@ export class ContributionController {
   }
 
   @Get('/repo/:id')
-  async findOneUserById(
+  async findOneRepoById(
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {

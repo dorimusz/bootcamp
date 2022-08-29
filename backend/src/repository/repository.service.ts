@@ -26,19 +26,24 @@ export class RepositoryService {
     }); // w type number it has a problem
   }
 
+  //get contributors list, gives back repofull name with da twist
+
+  // async getContributors(id: number) {}
+
+  /* 
   async findContributions(id: number): Promise<ContributionEntity[]> {
     return await this.contributionRepository.find({
       where: { repositoryId: id },
     });
   }
-
+  */
   async searchRepositories(query: {
     language: string;
     stargazer_count: number;
     ownerId: number;
   }) {
-    console.log('@@query', query);
-    console.log('@@querylang', query.stargazer_count);
+    // console.log('@@query', query);
+    // console.log('@@querylang', query.stargazer_count);
     if (query.language) {
       return await this.repositoryRepository.find({
         where: { language: query.language },
@@ -53,13 +58,6 @@ export class RepositoryService {
       return await this.repositoryRepository.find({
         where: { ownerId: query.ownerId },
       });
-
-      // const repoByOwnerId = this.repositoryRepository
-      //   .createQueryBuilder('ownerId')
-      //   .where('repository.ownerId = :ownerId', { ownerId: query.ownerId })
-      //   .getMany();
-
-      // return repoByOwnerId;
     }
     // if (
     //   (query.language && query.stargazer_count) ||

@@ -14,13 +14,14 @@ import {
 // import { Logger } from 'winston';
 import { Request, Response } from 'express';
 import { RepositoryService } from './repository.service';
+import { ContributionService } from 'src/contribution/contribution.service';
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
 import { ApiResponseService } from 'src/utils/apiResponse.service';
 @Controller('/repository')
 export class RepositoryController {
   constructor(
     private readonly repositoryService: RepositoryService, // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    private readonly contributionService: RepositoryService,
+    private readonly contributionService: ContributionService,
     private readonly apiResponseService: ApiResponseService,
   ) {}
 
@@ -69,7 +70,8 @@ export class RepositoryController {
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {
-    const contributions = await this.contributionService.findContributions(id);
+    const contributions =
+      await this.contributionService.getAllContributionsByRepoId(id);
     console.log(contributions.length);
     this.apiResponseService.customApiResponseForArrays(
       res,
@@ -78,11 +80,4 @@ export class RepositoryController {
       'Error getting contributions.',
     );
   }
-
-  // async searchRepositories(
-  //   @Body() query: { language: string },
-  // ): Promise<RepositoryEntity[]> {
-  //   console.log(query.language);
-  //   return await this.repositoryService.searchRepositories(query);
-  // }
 }
