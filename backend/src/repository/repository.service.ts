@@ -19,7 +19,9 @@ export class RepositoryService {
 
   async getRepoById(id: number): Promise<RepositoryEntity> {
     console.log('@@ID', id);
+    // return await this.repositoryRepository.findOneOrFail({ //throws an error
     return await this.repositoryRepository.findOne({
+      //doesn't throw an error, gives null
       where: { id },
     }); // w type number it has a problem
   }
@@ -27,6 +29,13 @@ export class RepositoryService {
   async findContributions(id: number): Promise<ContributionEntity[]> {
     return await this.contributionRepository.find({
       where: { repositoryId: id },
+    });
+  }
+
+  async searchRepositories(query: { language: string }) {
+    console.log('@@service', query.language);
+    return await this.repositoryRepository.find({
+      where: { language: query.language },
     });
   }
 }

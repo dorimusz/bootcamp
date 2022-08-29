@@ -7,6 +7,8 @@ import {
   ParseIntPipe,
   HttpException,
   HttpStatus,
+  Query,
+  Body,
 } from '@nestjs/common';
 // import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 // import { Logger } from 'winston';
@@ -23,14 +25,29 @@ export class RepositoryController {
   ) {}
 
   @Get()
-  async getRepositories(@Req() req: Request, @Res() res: Response) {
-    const repositories = await this.repositoryService.getAllRepos();
-    this.apiResponseService.customApiResponse(
-      res,
-      repositories,
-      'No repositories found.',
-      'Error getting repositories.',
-    );
+  async getRepositories(
+    @Query() query: { language: string },
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    console.log(query); //query.language {language: 'Ruby'}
+    if (query.language) {
+      const queryRepo = await this.repositoryService.searchRepositories(query);
+      this.apiResponseService.customApiResponse(
+        res,
+        queryRepo,
+        'No repos found built with this language.',
+        'An error occured.',
+      );
+    } else {
+      const repositories = await this.repositoryService.getAllRepos();
+      this.apiResponseService.customApiResponse(
+        res,
+        repositories,
+        'No repositories found.',
+        'Error getting repositories.',
+      );
+    }
   }
 
   @Get('/:id')
@@ -60,4 +77,11 @@ export class RepositoryController {
       'Error getting contributions.',
     );
   }
+
+  // async searchRepositories(
+  //   @Body() query: { language: string },
+  // ): Promise<RepositoryEntity[]> {
+  //   console.log(query.language);
+  //   return await this.repositoryService.searchRepositories(query);
+  // }
 }
