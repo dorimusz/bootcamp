@@ -26,10 +26,6 @@ export class RepositoryService {
     }); // w type number it has a problem
   }
 
-  //get contributors list, gives back repofull name with da twist
-
-  // async getContributors(id: number) {}
-
   /* 
   async findContributions(id: number): Promise<ContributionEntity[]> {
     return await this.contributionRepository.find({
@@ -37,6 +33,11 @@ export class RepositoryService {
     });
   }
   */
+
+  // async getContributors(full_name: string): Promise<ContributionEntity[]> {
+
+  // }
+
   async searchRepositories(query: {
     language: string;
     stargazer_count: number;
@@ -59,54 +60,5 @@ export class RepositoryService {
         where: { ownerId: query.ownerId },
       });
     }
-    // if (
-    //   (query.language && query.stargazer_count) ||
-    //   (query.language && query.ownerId) ||
-    //   (query.stargazer_count && query.ownerId) ||
-    //   (query.language && query.stargazer_count && query.ownerId)
-    // ) {
-    //   return await this.repositoryRepository.find({
-    //     where: {
-    //       language: query.language,
-    //       stargazer_count: query.stargazer_count,
-    //       ownerId: query.ownerId,
-    //     },
-    //   });
-    // }
   }
 }
-
-/*
-async searchRepositories(query: {
-    language?: string;
-    stargazer_count?: number;
-    ownerId?: number;
-    description?: string;
-  }) {
-    console.log('@@service', query.language);
-    if (query.language && query.stargazer_count && query.ownerId) {
-      return await this.repositoryRepository.find({
-        where: {
-          language: query.language,
-          stargazer_count: query.stargazer_count,
-          ownerId: query.ownerId,
-        },
-      });
-    }
-    if (query.language) {
-      return await this.repositoryRepository.find({
-        where: { language: query.language },
-      });
-    }
-    if (query.stargazer_count) {
-      return await this.repositoryRepository.find({
-        where: { stargazer_count: query.stargazer_count },
-      });
-    }
-    if (query.ownerId) {
-      return await this.repositoryRepository.find({
-        where: { ownerId: query.ownerId },
-      });
-    }
-  }
-*/

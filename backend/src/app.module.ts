@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { LoggerConfig } from './config/logger.config';
@@ -19,6 +24,7 @@ import { UserModule } from './user/user.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ContributionModule } from './contribution/contribution.module';
 import { ApiResponseModule } from './utils/apiResponse.module';
+import { requestMiddleware } from './middlewares/request.middleware';
 
 const logger: LoggerConfig = new LoggerConfig();
 @Module({
@@ -35,7 +41,11 @@ const logger: LoggerConfig = new LoggerConfig();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(requestMiddleware).forRoutes(AppController);
+  }
+}
 
 //forFeature entity class = repository injectable to service
 //repository query builder

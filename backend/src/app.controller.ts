@@ -15,8 +15,8 @@ export class AppController {
     // this.logger.log('warn', 'warn message');
     // this.logger.log('info', 'info message');
 
-    this.logger.error(new Error('error message about something went wrong'));
-    this.logger.log('info', 'info message');
+    // this.logger.error(new Error('error message about something went wrong'));
+    // this.logger.log('info', 'info message');
 
     return this.appService.getHello();
   }

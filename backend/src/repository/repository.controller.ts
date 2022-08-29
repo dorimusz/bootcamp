@@ -72,7 +72,8 @@ export class RepositoryController {
   ) {
     const contributions =
       await this.contributionService.getAllContributionsByRepoId(id);
-    console.log(contributions.length);
+    // console.log('@@contrib', contributions.length);
+    // console.log('@@contrib', contributions);
     this.apiResponseService.customApiResponseForArrays(
       res,
       contributions,
@@ -80,4 +81,14 @@ export class RepositoryController {
       'Error getting contributions.',
     );
   }
+
+  // @Get('/test')
+  // async getContributors(
+  //   // @Param('full_name', ParseIntPipe) full_name: string,
+  //   @Res() res: Response,
+  // ) {
+  //   const repository = await this.repositoryService.getContributors(full_name);
+  //   console.log('@@repository', repository);
+  //   res.send(repository);
+  // }
 }
