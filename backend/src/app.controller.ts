@@ -1,6 +1,17 @@
-import { Controller, Get, Logger, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Inject,
+  UseInterceptors,
+  CacheInterceptor,
+  CacheKey,
+  CacheTTL,
+} from '@nestjs/common';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { AppService } from './app.service';
+
+// @UseInterceptors(CacheInterceptor) // can use caching a specific route, but rn want to use it everywhere
 @Controller()
 export class AppController {
   constructor(
@@ -9,15 +20,10 @@ export class AppController {
   ) {}
 
   @Get() //also accepts a string as a path
-  getHello(): string {
-    // this.logger.error('error in app controller');
-    // this.logger.log('error', 'error message');
-    // this.logger.log('warn', 'warn message');
-    // this.logger.log('info', 'info message');
-
-    // this.logger.error(new Error('error message about something went wrong'));
-    // this.logger.log('info', 'info message');
-
+  // @CacheKey('some_route') //custom cache
+  // @CacheTTL(60) //custom ttl
+  //got rid of type and made it async bc caching
+  async getHello() {
     return this.appService.getHello();
   }
 }

@@ -1,12 +1,16 @@
 import {
+  CacheInterceptor,
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
 import { LoggerConfig } from './config/logger.config';
+
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import * as redisStore from 'cache-manager-redis-store';
 
 import config from '../ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -43,9 +47,23 @@ const logger: LoggerConfig = new LoggerConfig();
     RepositoryModule,
     ContributionModule,
     ApiResponseModule,
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      socket: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -63,3 +81,12 @@ export class AppModule implements NestModule {
 
 //forFeature entity class = repository injectable to service
 //repository query builder
+
+/* 
+//give the object to cacheManager
+{
+      ttl: 60, //time that items last before got evicted
+      // max: 1000 //amount of items it stores
+      isGlobal: true,
+    }
+*/
