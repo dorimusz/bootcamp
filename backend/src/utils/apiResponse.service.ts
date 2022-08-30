@@ -1,20 +1,43 @@
-import { Injectable, Req, Res } from '@nestjs/common';
+import { Injectable, Inject, Req, Res, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
-
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { RequestMiddleware } from '../middlewares/request.middleware';
 @Injectable()
 export class ApiResponseService {
+  constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly filterResponse: RequestMiddleware, // private readonly logger: LoggerConfig,
+  ) {}
+
+  filterResHeader = (header) => {
+    return Object.entries(header).filter(
+      ([key, value]) => key !== 'cookie' && 'authorization',
+    );
+  };
+
   customApiResponse(@Res() res: Response, data, notFoundMsg, elseMsg) {
+    const fileteredResHeader = this.filterResHeader(res.header);
+    const message = this.logger.log(
+      'info',
+      `custom api RESPONSE: status code: ${
+        res.statusCode
+      }, headers: ${JSON.stringify(fileteredResHeader)}`,
+    );
+
     if (data) {
       res.status(200).send(data);
+      this.logger.log('info', message);
     } else if (data === null) {
       // console.log(data);
       res.status(404).send({
         msg: notFoundMsg,
       });
+      this.logger.log('warn', message);
     } else {
       res.status(500).send({
         msg: elseMsg,
       });
+      this.logger.log('error', message);
     }
   }
 

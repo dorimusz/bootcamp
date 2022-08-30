@@ -15,6 +15,8 @@ import 'reflect-metadata'; // needed for typeorm
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+import { RequestMiddleware } from './middlewares/request.middleware';
+
 import { Repository } from './entity/repository.entity';
 import { User } from './entity/user.entity';
 import { Contribution } from './entity/contribution.entity';
@@ -24,7 +26,11 @@ import { UserModule } from './user/user.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ContributionModule } from './contribution/contribution.module';
 import { ApiResponseModule } from './utils/apiResponse.module';
-import { requestMiddleware } from './middlewares/request.middleware';
+
+import { ContributionController } from './contribution/contribution.controller';
+import { RepositoryController } from './repository/repository.controller';
+import { UserController } from './user/user.controller';
+import { GithubController } from './github/github.controller';
 
 const logger: LoggerConfig = new LoggerConfig();
 @Module({
@@ -43,7 +49,15 @@ const logger: LoggerConfig = new LoggerConfig();
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(requestMiddleware).forRoutes(AppController);
+    consumer
+      .apply(RequestMiddleware)
+      .forRoutes(
+        AppController,
+        ContributionController,
+        RepositoryController,
+        UserController,
+        GithubController,
+      );
   }
 }
 
