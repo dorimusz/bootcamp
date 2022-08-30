@@ -25,7 +25,7 @@ export class RepositoryController {
     private readonly apiResponseService: ApiResponseService,
   ) {}
 
-  @Get()
+  @Get('/')
   async getRepositories(
     @Query()
     query: { language: string; stargazer_count: number; ownerId: number },
@@ -33,23 +33,27 @@ export class RepositoryController {
     @Res() res: Response,
   ) {
     console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
-    if (query.language || query.stargazer_count || query.ownerId) {
-      const queryRepo = await this.repositoryService.searchRepositories(query);
-      this.apiResponseService.customApiResponse(
-        res,
-        queryRepo,
-        'No repos found built with this language.',
-        'An error occured.',
-      );
-    } else {
-      const repositories = await this.repositoryService.getAllRepos();
-      this.apiResponseService.customApiResponse(
-        res,
-        repositories,
-        'No repositories found.',
-        'Error getting repositories.',
-      );
-    }
+    // if (query.language || query.stargazer_count || query.ownerId) {
+    const queryRepo = await this.repositoryService.searchRepositories(
+      query.language,
+      query.stargazer_count,
+      query.ownerId,
+    );
+    this.apiResponseService.customApiResponse(
+      res,
+      queryRepo,
+      'No repos found built with this language.',
+      'An error occured.',
+    );
+    // } else {
+    //   const repositories = await this.repositoryService.getAllRepos();
+    //   this.apiResponseService.customApiResponse(
+    //     res,
+    //     repositories,
+    //     'No repositories found.',
+    //     'Error getting repositories.',
+    //   );
+    // }
   }
 
   @Get('/:id')

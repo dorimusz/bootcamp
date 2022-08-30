@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
-import { Contribution as ContributionEntity } from 'src/entity/contribution.entity';
+import {
+  Contribution,
+  Contribution as ContributionEntity,
+} from 'src/entity/contribution.entity';
+import { ContributionService } from 'src/contribution/contribution.service';
 
 @Injectable()
 export class RepositoryService {
   constructor(
     @InjectRepository(RepositoryEntity)
     private readonly repositoryRepository: Repository<RepositoryEntity>,
-    @InjectRepository(ContributionEntity)
-    private readonly contributionRepository: Repository<ContributionEntity>,
+    private readonly contributionService: ContributionService,
   ) {}
 
   async getAllRepos(): Promise<RepositoryEntity[]> {
@@ -38,27 +41,36 @@ export class RepositoryService {
 
   // }
 
-  async searchRepositories(query: {
-    language: string;
-    stargazer_count: number;
-    ownerId: number;
-  }) {
-    // console.log('@@query', query);
-    // console.log('@@querylang', query.stargazer_count);
-    if (query.language) {
+  async searchRepositories(
+    language: string,
+    stargazer_count: number,
+    ownerId: number,
+  ) {
+    if (language || stargazer_count || ownerId) {
       return await this.repositoryRepository.find({
-        where: { language: query.language },
+        where: [
+          {
+            language: language,
+            stargazer_count: stargazer_count,
+            ownerId: ownerId,
+          },
+        ],
       });
     }
-    if (query.stargazer_count) {
-      return await this.repositoryRepository.find({
-        where: { stargazer_count: query.stargazer_count },
-      });
-    }
-    if (query.ownerId) {
-      return await this.repositoryRepository.find({
-        where: { ownerId: query.ownerId },
-      });
-    }
+    return await this.getAllRepos();
+
+    //return await this.repositoryRepository.find({
+    //   where: [
+    //     { language: query.language },
+    //     { stargazer_count: query.stargazer_count },
+    //     { ownerId: query.ownerId },
+    //   ],
+    // });
+    // SELECT * FROM repository WHERE language = 'en' OR ownerId = 1 OR stargazer_count=1;
+
+    // return await this.repositoryRepository.find({
+    //   where: { language: 'en', ownerId: 1 },
+    // });
+    // SELECT * FROM repository WHERE language = 'en' AND ownerId = 1;
   }
 }
