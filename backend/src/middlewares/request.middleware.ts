@@ -24,16 +24,26 @@ export class RequestMiddleware implements NestMiddleware {
     else if (res.statusCode >= 400 && res.statusCode <= 499) logLevel = 'warn';
     else if (res.statusCode >= 500) logLevel = 'error';
 
-    this.logger.log(
-      logLevel,
-      `Incoming REQUEST: method: ${req.method}, original URL of the request ${
-        req.originalUrl
-      }, headers: ${JSON.stringify(
-        filteredReqHeader,
-      )} and body: ${JSON.stringify(req.body)}, sent RESPONSE: status code: ${
-        res.statusCode
-      }, headers: ${JSON.stringify(filteredResHeader)}`,
-    );
+    res.on('close', () => {
+      const { statusCode } = res;
+      const contentLength = res.get('content-length');
+
+      this.logger.log(
+        logLevel,
+        `MIDDLEWARE Incoming REQUEST: method: ${
+          req.method
+        }, original URL of the request ${
+          req.originalUrl
+        }, headers: ${JSON.stringify(
+          filteredReqHeader,
+        )} and body: ${JSON.stringify(req.body)}, sent RESPONSE: status code: ${
+          res.statusCode
+        }, headers: ${JSON.stringify(
+          filteredResHeader,
+        )}, CONTENT LENGTH???? ${contentLength}`,
+      );
+    });
+
     next();
   }
 }
