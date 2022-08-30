@@ -14,6 +14,7 @@ const config: TypeOrmModuleOptions = {
   entities: [User, Repository, Contribution],
   migrations: ['./migrations/*.ts'],
   synchronize: false, // might be true for development only - false for production, can cause data loss
+  logging: true,
 };
 
 export default config;
