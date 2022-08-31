@@ -47,22 +47,23 @@ const logger: LoggerConfig = new LoggerConfig();
     RepositoryModule,
     ContributionModule,
     ApiResponseModule,
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      socket: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   isCacheableValue: (value) => value !== undefined || value !== null,
+    //   store: redisStore,
+    //   socket: {
+    //     host: 'localhost',
+    //     port: 6379,
+    //   },
+    // }),
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheInterceptor,
+    // },
   ],
 })
 export class AppModule implements NestModule {

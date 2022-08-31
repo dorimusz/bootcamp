@@ -16,17 +16,20 @@ export class RepositoryService {
     private readonly contributionService: ContributionService,
   ) {}
 
+  //searchRepositories() uses it
   async getAllRepos(): Promise<RepositoryEntity[]> {
-    return await this.repositoryRepository.find();
+    const result = await this.repositoryRepository.find();
+    // console.log('@@ddddd', result);
+    return result;
   }
-
   async getRepoById(id: number): Promise<RepositoryEntity> {
     console.log('@@ID', id);
-    // return await this.repositoryRepository.findOneOrFail({ //throws an error
-    return await this.repositoryRepository.findOne({
+    const result = await this.repositoryRepository.findOne({
       //doesn't throw an error, gives null
       where: { id },
     }); // w type number it has a problem
+    // return await this.repositoryRepository.findOneOrFail({ //throws an error
+    return result;
   }
 
   /* 
