@@ -1,0 +1,45 @@
+import * as S from "../Navigation/NavigationAtom";
+//stilus es legeneralt nav
+import * as T from "../Text/TextAtom";
+import { Colors } from "../../enums/colorEnums";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTent } from "@fortawesome/free-solid-svg-icons";
+import { faDatabase, faUser } from "@fortawesome/free-solid-svg-icons";
+
+const NavBar = () => {
+  return (
+    <S.NavContainer>
+      <S.TitleContainer>
+        <T.TextHeader size="20px">
+          <FontAwesomeIcon
+            style={{ marginRight: ".5rem", width: "20px", height: "20px" }}
+            icon={faTent}
+          />
+          BootCamp
+        </T.TextHeader>
+      </S.TitleContainer>
+      <S.NavItemWrapper>
+        <S.ListItems>
+          <T.TextPrimary margin="0 0 1rem 0">
+            <FontAwesomeIcon
+              icon={faDatabase}
+              style={{ marginRight: ".5rem", width: "15px", height: "15px" }}
+            />
+            <Link href="/">Repositories</Link>
+          </T.TextPrimary>
+        </S.ListItems>
+        <S.ListItems>
+          <T.TextPrimary margin="0">
+            <FontAwesomeIcon
+              icon={faUser}
+              style={{ marginRight: ".5rem", width: "15px", height: "15px" }}
+            />
+            <Link href="/">User List</Link>
+          </T.TextPrimary>
+        </S.ListItems>
+      </S.NavItemWrapper>
+    </S.NavContainer>
+  );
+};
+export default NavBar;
