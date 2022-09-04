@@ -10,7 +10,7 @@ import { faDatabase, faUser } from "@fortawesome/free-solid-svg-icons";
 const NavBar = () => {
   return (
     <S.NavContainer>
-      <S.TitleContainer>
+      <S.TitleContainer justifyContent="center">
         <T.TextHeader size="20px">
           <FontAwesomeIcon
             style={{ marginRight: ".5rem", width: "20px", height: "20px" }}

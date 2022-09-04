@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Colors } from "../../enums/colorEnums";
 
+interface NavProp {
+  justifyContent?: string;
+}
 export const NavItemWrapper = styled.ul`
   width: 100%;
   padding-left: 1rem;
@@ -11,21 +14,22 @@ export const NavItemWrapper = styled.ul`
 `;
 
 export const NavContainer = styled.nav`
-  position: fixed;
-  width: 20%;
-  max-width: 200px;
+  position: absolute;
+  width: 200px;
   height: 100vh;
   left: 0px;
   top: 0px;
   background: ${Colors.DarkBlue};
 `;
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled.div<NavProp>`
   display: flex;
-  justify-content: center;
+  height: 80px;
+  justifycontent: ${({ justifyContent }) => justifyContent || "center"};
   align-center: center;
   margin-bottom: 1.5rem;
   padding: 1rem 0;
+  background: ${Colors.GreenColor};
 `;
 
 export const ListItems = styled.li``;
