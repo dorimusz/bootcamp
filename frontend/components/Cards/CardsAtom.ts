@@ -4,7 +4,7 @@ import { Colors } from "../../enums/colorEnums";
 export const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
   justify-content: center;
   min-height: calc(100vh - 160px);
   height: fit-content;
@@ -15,7 +15,7 @@ export const CardContainer = styled.div`
 export const Card = styled.div`
   background: ${Colors.DarkBlue};
   width: 30%;
-  min-width: 420px;
+  min-width: 390px;
   min-height: 250px;
   border-radius: 24px;
 
