@@ -13,10 +13,11 @@ export const NavItemWrapper = styled.ul`
   justify-content: flext-start;
 `;
 
+//position: absolute, height: 100vh
 export const NavContainer = styled.nav`
-  position: absolute;
+  position: fixed;
   width: 200px;
-  height: 100vh;
+  height: 100%;
   left: 0px;
   top: 0px;
   background: ${Colors.DarkBlue};
@@ -31,7 +32,6 @@ export const SmallHeading = styled.div`
 export const TitleContainer = styled.div<NavProp>`
   display: flex;
   height: 80px;
-  margin-bottom: 1.5rem;
   padding: 1rem 0;
 `;
 
