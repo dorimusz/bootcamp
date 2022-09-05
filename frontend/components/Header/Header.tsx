@@ -6,8 +6,11 @@ const Header: React.FC = () => {
   return (
     <S.Header>
       <SS.TitleContainer justifyContent="space-between">
-        <T.TextHeader>Title</T.TextHeader>
-        <T.TextHeader>Title</T.TextHeader>
+        <SS.SmallHeading>
+          <T.TextHeader size="25px">Title</T.TextHeader>
+          <T.TextHeader size="25px">Title</T.TextHeader>
+          {/* second text header = input filed */}
+        </SS.SmallHeading>
       </SS.TitleContainer>
     </S.Header>
   );

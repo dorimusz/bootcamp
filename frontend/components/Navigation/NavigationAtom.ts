@@ -20,13 +20,17 @@ export const NavContainer = styled.nav`
   left: 0px;
   top: 0px;
   background: ${Colors.DarkBlue};
+  justify-content: center;
+`;
+
+export const SmallHeading = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const TitleContainer = styled.div<NavProp>`
   display: flex;
   height: 80px;
-  justifycontent: ${({ justifyContent }) => justifyContent || "center"};
-  align-center: center;
   margin-bottom: 1.5rem;
   padding: 1rem 0;
   background: ${Colors.GreenColor};

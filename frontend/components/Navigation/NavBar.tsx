@@ -11,13 +11,15 @@ const NavBar = () => {
   return (
     <S.NavContainer>
       <S.TitleContainer justifyContent="center">
-        <T.TextHeader size="20px">
-          <FontAwesomeIcon
-            style={{ marginRight: ".5rem", width: "20px", height: "20px" }}
-            icon={faTent}
-          />
-          BootCamp
-        </T.TextHeader>
+        <S.SmallHeading>
+          <T.TextHeader size="20px">
+            <FontAwesomeIcon
+              style={{ marginRight: ".5rem", width: "20px", height: "20px" }}
+              icon={faTent}
+            />
+            BootCamp
+          </T.TextHeader>
+        </S.SmallHeading>
       </S.TitleContainer>
       <S.NavItemWrapper>
         <S.ListItems>

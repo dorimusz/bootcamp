@@ -15,8 +15,10 @@ export const TextHeader = styled.h1<TextProp>`
   padding: ${({ padding }) => padding || "0"};
   margin: ${({ margin }) => margin || "0 1rem"};
   text-align: ${({ align }) => align || "left"};
-  font-size: ${({ size }) => size || "42px"};
+  font-size: ${({ size }) => size || "32px"};
   color: ${({ colors }) => colors || Colors.WhiteColor};
+  font-weight: 700;
+  vertical-align: middle;
 `;
 
 export const TextPrimary = styled.p<TextProp>`
