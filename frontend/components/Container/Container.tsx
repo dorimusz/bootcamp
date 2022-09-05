@@ -6,7 +6,7 @@ import ReduxTest from "../ReduxTest/ReduxTest";
 
 const Container = () => {
   return (
-    <S.MainContainer>
+    <S.MainContainer style={{ minHeight: "calc(100% - 80px)" }}>
       <Header />
       <Cards />
       {/* <ReduxTest /> */}
