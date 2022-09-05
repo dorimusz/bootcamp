@@ -1,5 +1,4 @@
 import * as S from "./ContainerAtom";
-import * as T from "../Text/TextAtom";
 import Header from "../Header/Header";
 
 import ReduxTest from "../ReduxTest/ReduxTest";

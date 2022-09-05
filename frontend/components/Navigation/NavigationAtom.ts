@@ -33,7 +33,6 @@ export const TitleContainer = styled.div<NavProp>`
   height: 80px;
   margin-bottom: 1.5rem;
   padding: 1rem 0;
-  background: ${Colors.GreenColor};
 `;
 
 export const ListItems = styled.li``;
