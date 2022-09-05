@@ -4,8 +4,7 @@ import * as T from "../Text/TextAtom";
 import { Colors } from "../../enums/colorEnums";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTent } from "@fortawesome/free-solid-svg-icons";
-import { faDatabase, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faDatabase, faTent, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = () => {
   return (
