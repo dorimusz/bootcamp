@@ -1,7 +1,7 @@
 //React.FC(functional components that take a props argument and return JSX) and NextPage(just the page type of a nextjs project - not component!) type:
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
-import Table from "../../components/Tables/Table";
+import UserTable from "../../components/Tables/UserTable";
 import { GetStaticProps } from "next";
 import { getUserList } from "../../lib/users";
 
@@ -13,7 +13,7 @@ import { refreshUsers, setUsers } from "../../store/user/userSlice";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const users = await getUserList();
-  // console.log(users);
+  console.log(users);
   return {
     props: {
       users,
@@ -35,8 +35,8 @@ const Users: React.FC<any> = ({ users }) => {
       <Layout>
         <Container>
           {/* <p>bibop, table goes here</p> */}
-          <Table />
-          {usersState.length && <h1>{usersState[0].login}</h1>}
+          <UserTable />
+          {/* {usersState.length && <h1>{usersState[0].login}</h1>} */}
         </Container>
       </Layout>
     </>
