@@ -1,20 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+type User = {
+  avatar_url: string;
+  login: string;
+  type: string;
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    valueExample: 0,
+    users: [],
   },
   reducers: {
     //legeneral egy actiont, ami a stateket befolyasolja
-    example: (state) => {
-      state.valueExample += 3;
+    refreshUsers: (state, action) => {
+      state.users = [];
     },
-    exampleAction: (state, action: PayloadAction<number>) => {
-      state.valueExample += action.payload;
+    setUsers: (state, action: PayloadAction<any>) => {
+      state.users = action.payload;
     },
   },
 });
 
 export const { reducer, actions } = userSlice;
-export const { example, exampleAction } = userSlice.actions;
+export const { refreshUsers, setUsers } = userSlice.actions;
