@@ -1,6 +1,6 @@
 import http from "axios";
 
-export const callApi = () => {
+export const apiCall = () => {
   const instance = http.create({
     baseURL: "http://localhost:4000/api/v1",
     timeout: 3000,
