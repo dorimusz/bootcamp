@@ -34,7 +34,6 @@ const Users: React.FC<any> = ({ users }) => {
     <>
       <Layout>
         <Container>
-          {/* <p>bibop, table goes here</p> */}
           <UserTable />
           {/* {usersState.length && <h1>{usersState[0].login}</h1>} */}
         </Container>

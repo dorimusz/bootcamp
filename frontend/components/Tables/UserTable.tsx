@@ -1,5 +1,4 @@
 import * as S from "./TableAtom";
-import * as I from "../Image/ImageAtom";
 import UserTableRow from "./UserTableRow";
 
 import { useSelector } from "react-redux";
@@ -18,13 +17,7 @@ const UserTable = () => {
         </S.TR>
 
         {users?.map((userData: any, i: number) => (
-          <S.TR key={i}>
-            <S.DataCell>
-              <I.RoundAvatar src={userData.avatar_url} />
-            </S.DataCell>
-            <S.DataCell>{userData.login}</S.DataCell>
-            <S.DataCell>{userData.type}</S.DataCell>
-          </S.TR>
+          <UserTableRow userData={userData} key={i} />
         ))}
       </S.Table>
     </S.TableContainer>
