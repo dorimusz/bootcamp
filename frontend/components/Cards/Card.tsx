@@ -6,7 +6,7 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import * as T from "../Text/TextAtom";
-import content from "../Cards/content";
+import repo from "../../content/repo";
 import { Colors } from "../../enums/colorEnums";
 
 const Card = () => {
@@ -20,12 +20,12 @@ const Card = () => {
           />
           <S.TitleHolder>
             <T.TextHeader size="20px" margin=".1rem">
-              {content.name}
+              {repo.name}
             </T.TextHeader>
-            <S.OwnerName>{content.owner}</S.OwnerName>
+            <S.OwnerName>{repo.owner}</S.OwnerName>
           </S.TitleHolder>
         </S.NameHeading>
-        <S.Description>{content.description}</S.Description>
+        <S.Description>{repo.description}</S.Description>
 
         <S.DetailHolder>
           <S.Icon>
@@ -34,7 +34,7 @@ const Card = () => {
               style={{ width: "20px", height: "20px" }}
             />
           </S.Icon>
-          <S.Details>{content.lang}</S.Details>
+          <S.Details>{repo.lang}</S.Details>
         </S.DetailHolder>
 
         <S.DetailHolder style={{ justifyContent: "space-between" }}>
@@ -47,11 +47,11 @@ const Card = () => {
                 />
               </S.Icon>
             </S.GreenWrapper>
-            <S.Details>{content.star}</S.Details>
+            <S.Details>{repo.star}</S.Details>
           </S.DetailHolder>
           <S.DetailHolder>
             <S.GreenWrapper>Contributions: </S.GreenWrapper>
-            <S.Details>{content.conts}</S.Details>
+            <S.Details>{repo.conts}</S.Details>
           </S.DetailHolder>
         </S.DetailHolder>
       </S.ContentHolder>
