@@ -16,7 +16,7 @@ export const Card = styled.div`
   background: ${Colors.DarkBlue};
   width: 30%;
   min-width: 390px;
-  min-height: 250px;
+  min-height: 200px;
   border-radius: 24px;
 
   padding: 0.4rem;
@@ -57,11 +57,19 @@ export const Description = styled.p`
   padding: 20px 0;
   font-size: 13px;
   letter-spacing: 0.03rem;
+  height: 100px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
 `;
 
 //language info, bottom of the card
 export const DetailHolder = styled.div`
   display: flex;
+`;
+export const BigDetailHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
 `;
 
 export const Details = styled.p`
