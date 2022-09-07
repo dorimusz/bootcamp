@@ -10,15 +10,17 @@ const UserTable = () => {
   return (
     <S.TableContainer>
       <S.Table>
-        <S.TR>
-          <S.TH>Avatar</S.TH>
-          <S.TH>Login</S.TH>
-          <S.TH>Type</S.TH>
-        </S.TR>
+        <S.TableBody>
+          <S.TR>
+            <S.TH>Avatar</S.TH>
+            <S.TH>Login</S.TH>
+            <S.TH>Type</S.TH>
+          </S.TR>
 
-        {users?.map((userData: any, i: number) => (
-          <UserTableRow userData={userData} key={i} />
-        ))}
+          {users?.map((userData: any, i: number) => (
+            <UserTableRow key={i} userData={userData} />
+          ))}
+        </S.TableBody>
       </S.Table>
     </S.TableContainer>
   );

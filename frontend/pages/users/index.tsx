@@ -13,7 +13,7 @@ import { refreshUsers, setUsers } from "../../store/user/userSlice";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const users = await getUserList();
-  console.log(users);
+  // console.log(users);
   return {
     props: {
       users,
@@ -22,8 +22,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 const Users: React.FC<any> = ({ users }) => {
-  const { users: usersState } = useSelector(userSelector);
+  // const { users: usersState } = useSelector(userSelector);
   const dispatch = useDispatch();
+  // console.log(users);
   // dispatch(setUsers(users));
 
   useEffect(() => {

@@ -17,6 +17,7 @@ export const Table = styled.table`
   border-radius: 25px;
   background: ${Colors.DarkBlue};
 `;
+export const TableBody = styled.tbody``;
 
 export const TR = styled.tr`
   text-align: center;
