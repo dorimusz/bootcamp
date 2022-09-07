@@ -13,12 +13,21 @@ export const CardContainer = styled.div`
 
 //The card itself
 export const Card = styled.div`
+  width: 30%;
+  min-width: 390px;
+  min-height: 200px;
+  border-radius: 24px;
+  margin: 0;
+  padding: 0.4rem;
+`;
+
+export const A = styled.a`
   background: ${Colors.DarkBlue};
   width: 30%;
   min-width: 390px;
   min-height: 200px;
   border-radius: 24px;
-
+  margin: 0;
   padding: 0.4rem;
   &:hover {
     box-shadow: -2px -5px 4px rgba(0, 0, 0, 0.25),
@@ -75,6 +84,7 @@ export const BigDetailHolder = styled.div`
 export const Details = styled.p`
   font-weight: 700;
   padding-left: 0.7rem;
+  font-size: 1em;
 `;
 
 export const GreenWrapper = styled.div`
