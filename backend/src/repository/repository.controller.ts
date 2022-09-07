@@ -9,6 +9,8 @@ import {
   HttpStatus,
   Query,
   Body,
+  UseInterceptors,
+  CacheInterceptor,
 } from '@nestjs/common';
 // import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 // import { Logger } from 'winston';
@@ -25,6 +27,7 @@ export class RepositoryController {
     private readonly apiResponseService: ApiResponseService,
   ) {}
 
+  // @UseInterceptors(CacheInterceptor)
   @Get('/')
   async getRepositories(
     @Query()
