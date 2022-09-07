@@ -36,7 +36,7 @@ const NavBar = () => {
               icon={faUser}
               style={{ marginRight: ".5rem", width: "15px", height: "15px" }}
             />
-            <Link href="/">User List</Link>
+            <Link href="/users">User List</Link>
           </T.TextPrimary>
         </S.ListItems>
       </S.NavItemWrapper>
