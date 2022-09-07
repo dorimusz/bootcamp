@@ -18,7 +18,9 @@ export class RepositoryService {
 
   //searchRepositories() uses it
   async getAllRepos(): Promise<RepositoryEntity[]> {
-    const result = await this.repositoryRepository.find();
+    const result = await this.repositoryRepository.find({
+      relations: ['owner', 'contributions'],
+    });
     // console.log('@@ddddd', result);
     return result;
   }
@@ -27,6 +29,7 @@ export class RepositoryService {
     const result = await this.repositoryRepository.findOne({
       //doesn't throw an error, gives null
       where: { id },
+      // relations: ['contributions', 'owner'],
     }); // w type number it has a problem
     // return await this.repositoryRepository.findOneOrFail({ //throws an error
     return result;
