@@ -17,8 +17,6 @@ import { Contribution } from './contribution.entity';
 export class User extends BaseEntity {
   @PrimaryColumn({ type: 'int4' })
   userId: number;
-  // @OneToMany(() => Repository, (repository) => repository.owner)
-  // @JoinColumn()
 
   @Index('login-idx')
   @Column({ type: 'varchar', nullable: true })
@@ -34,7 +32,7 @@ export class User extends BaseEntity {
   type: string;
 
   //a user can have more than one repository, so it's a one-to-many relationship??
-  @OneToMany(() => Repository, (repository) => repository.owner, {
+  @OneToMany(() => Repository, (repository) => repository.ownerId, {
     onDelete: 'NO ACTION', //if repository is deleted, don't do anything
   })
   repositories: Repository[];
@@ -42,5 +40,5 @@ export class User extends BaseEntity {
   @OneToMany(() => Contribution, (contribution) => contribution.user, {
     onDelete: 'NO ACTION',
   })
-  contribution: Contribution; // array or not?
+  contributions: Contribution[]; // array or not?
 }

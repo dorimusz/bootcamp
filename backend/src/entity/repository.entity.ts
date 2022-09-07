@@ -19,9 +19,6 @@ export class Repository extends BaseEntity {
 
   @Column({ type: 'int4' })
   ownerId: number;
-  @ManyToOne(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
-  @JoinColumn()
-  owner: User; //if user is deleted, set ownerid to null
   // @JoinTable()
   // owner: number;
   //a repository can have a relationship with only one user
@@ -44,9 +41,11 @@ export class Repository extends BaseEntity {
   @Column({ type: 'int4', nullable: true })
   stargazer_count: number;
 
-  // @ManyToMany(() => User, (user) => user.repositories, { onDelete: 'SET NULL' })
-  // users: User[];
-
   @OneToMany(() => Contribution, (contribution) => contribution.repository)
   contributions: Contribution[];
+
+  // @ManyToOne(() => User, (user) => user.userId, { onDelete: 'SET NULL' })
+  @ManyToOne(() => User, (user) => user.userId)
+  @JoinColumn()
+  owner: User; //if user is deleted, set ownerid to null
 }
