@@ -1,11 +1,6 @@
-export class RepositoryDto {
-  id: number;
-  owner: string;
-  full_name: string;
-  description: string;
-  html_url: string;
-  language: string;
-  stargazer_count: number;
+import { Repository as RepositoryEntity } from 'src/entity/repository.entity';
+export interface RepositoryWithContributionCount extends RepositoryEntity {
+  contributionSum: number;
 }
 
 /*

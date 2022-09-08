@@ -53,7 +53,7 @@ const Card: React.FC<{ repoData: any }> = ({ repoData }) => {
             </S.DetailHolder>
             <S.DetailHolder>
               <S.GreenWrapper>Contributions: </S.GreenWrapper>
-              <S.Details>{repo.conts}</S.Details>
+              <S.Details>{repoData.contributionSum}</S.Details>
             </S.DetailHolder>
           </S.DetailHolder>
         </S.BigDetailHolder>

@@ -2,18 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Repository as RepositoryEntity } from '../entity/repository.entity';
-import {
-  Contribution,
-  Contribution as ContributionEntity,
-} from 'src/entity/contribution.entity';
+import { RepositoryWithContributionCount } from './dto/repository.dto';
 import { ContributionService } from 'src/contribution/contribution.service';
 
 @Injectable()
 export class RepositoryService {
   constructor(
     @InjectRepository(RepositoryEntity)
-    private readonly repositoryRepository: Repository<RepositoryEntity>,
-    private readonly contributionService: ContributionService,
+    private readonly repositoryRepository: Repository<RepositoryEntity>, // private readonly contributionService: ContributionService,
   ) {}
 
   //searchRepositories() uses it
@@ -21,9 +17,26 @@ export class RepositoryService {
     const result = await this.repositoryRepository.find({
       relations: ['owner', 'contributions'],
     });
-    // console.log('@@ddddd', result);
+
+    result.map((repos: RepositoryWithContributionCount) => {
+      const contributionList = repos.contributions; //repository objects with
+
+      console.log('@@REPOLIST', repos);
+      // console.log('@@CONTRIBUTIONLIST', repos.contributionList);
+      const sum = contributionList
+        .map((contribution) => contribution.commitCount)
+        .reduce((prev, next) => prev + next);
+
+      repos.contributionSum = sum;
+      // console.log('@@sum', sum);
+    });
+    // console.log('@@COUNT', contributionSum); //sum of commitcounts in an array
+    // console.log('@@REPORESULT', result[0].contributions);
+    console.log('@@REPORESULT', result);
+
     return result;
   }
+
   async getRepoById(id: number): Promise<RepositoryEntity> {
     console.log('@@ID', id);
     const result = await this.repositoryRepository.findOne({
