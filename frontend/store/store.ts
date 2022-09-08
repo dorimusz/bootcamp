@@ -1,11 +1,13 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { reducer as userReducer } from "./user/userSlice";
 import { reducer as repositoryReducer } from "./repository/repositorySlice";
+import { reducer as contributionReducer } from "./contribution/contributionSlice";
 //Layout children prop
 
 const reducers = {
   repository: repositoryReducer,
   user: userReducer,
+  contribution: contributionReducer,
 };
 
 const store = configureStore({

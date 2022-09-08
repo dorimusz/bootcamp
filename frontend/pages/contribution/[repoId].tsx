@@ -1,21 +1,55 @@
+import { useEffect } from "react";
+
 import { useRouter } from "next/router";
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
-import RepositoryTable from "../../components/Tables/RepositoryTable";
-function ContributionPage() {
+import ContributionTable from "../../components/Tables/ContributionTable";
+
+import { GetStaticProps, GetStaticPaths } from "next";
+import { getContributionList } from "../../lib/contributions";
+import { useDispatch } from "react-redux";
+import { setContribution } from "../../store/contribution/contributionSlice";
+
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const id = params.repoId;
+  const contribution = await getContributionList(id);
+
+  // console.log("@@para", params.repoId);
+  // console.log(users);
+  return {
+    props: {
+      contribution,
+      id,
+    },
+  };
+};
+
+const ContributionPage: React.FC<any> = ({ contribution }) => {
   const router = useRouter();
   router.query.repoId; //holds the value pf the url
-  console.log(router.query.repoId);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setContribution(contribution));
+  }, []);
 
   return (
     <div>
       <Layout>
         <Container>
-          <RepositoryTable />
+          <ContributionTable />
         </Container>
       </Layout>
     </div>
   );
-}
+};
 
 export default ContributionPage;
