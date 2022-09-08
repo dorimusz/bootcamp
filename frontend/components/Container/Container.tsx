@@ -8,7 +8,7 @@ import ReduxTest from "../ReduxTest/ReduxTest";
 const Container: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <S.MainContainer style={{ minHeight: "calc(100% - 80px)" }}>
-      <Header />
+      {/* <Header  /> */}
       {children}
       {/* <ReduxTest /> */}
     </S.MainContainer>

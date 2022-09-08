@@ -9,6 +9,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { getContributionList } from "../../lib/contributions";
 import { useDispatch } from "react-redux";
 import { setContribution } from "../../store/contribution/contributionSlice";
+import Header from "../../components/Header/Header";
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   return {
@@ -36,6 +37,7 @@ const ContributionPage: React.FC<any> = ({ contribution }) => {
   router.query.repoId; //holds the value pf the url
 
   const dispatch = useDispatch();
+  // console.log(contribution);
 
   useEffect(() => {
     dispatch(setContribution(contribution));
@@ -45,6 +47,11 @@ const ContributionPage: React.FC<any> = ({ contribution }) => {
     <div>
       <Layout>
         <Container>
+          <Header
+            title={
+              "Contributions related to repository: " + router.query.repoId
+            }
+          />
           <ContributionTable />
         </Container>
       </Layout>

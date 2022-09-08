@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from "../../store/user/userSelector";
 import { refreshUsers, setUsers } from "../../store/user/userSlice";
+import Header from "../../components/Header/Header";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const users = await getUserList();
@@ -35,6 +36,7 @@ const Users: React.FC<any> = ({ users }) => {
     <>
       <Layout>
         <Container>
+          <Header title={"User list"} />
           <UserTable />
           {/* {usersState.length && <h1>{usersState[0].login}</h1>} */}
         </Container>
