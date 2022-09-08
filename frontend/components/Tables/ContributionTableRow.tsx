@@ -9,7 +9,7 @@ const UserTableRow: React.FC<{ contributionData: any }> = ({
   return (
     <S.TR>
       <S.DataCell>{contributionData.userId}</S.DataCell>
-      <S.DataCell>{contributionData.repository.full_name}</S.DataCell>
+      <S.DataCell>{contributionData.commitCount}</S.DataCell>
     </S.TR>
   );
 };
