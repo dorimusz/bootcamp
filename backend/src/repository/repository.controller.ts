@@ -2,13 +2,11 @@ import {
   Controller,
   Get,
   Param,
-  Req,
   Res,
   ParseIntPipe,
   HttpException,
   HttpStatus,
   Query,
-  Body,
   UseInterceptors,
   CacheInterceptor,
 } from '@nestjs/common';
@@ -32,6 +30,55 @@ export class RepositoryController {
   async getRepositories(
     @Query()
     query: { language: string; stargazer_count: number; ownerId: number },
+    @Res() res: Response,
+  ) {
+    console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
+    const queryRepo = await this.repositoryService.searchRepositories(
+      query.language,
+      query.stargazer_count,
+      query.ownerId,
+    );
+    if (queryRepo.length === 0) {
+      throw new HttpException(
+        'Something went wrong, try again',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      res.send(queryRepo);
+    }
+  }
+
+  @Get('/:id')
+  async findOne(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+    const repository = await this.repositoryService.getRepoById(id);
+    if (repository) res.send(repository);
+    else
+      throw new HttpException('Repository not found', HttpStatus.BAD_REQUEST);
+  }
+
+  @Get('/:id/contributions')
+  async findContributions(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
+  ) {
+    const contributions =
+      await this.contributionService.getAllContributionsByRepoId(id);
+    // console.log('@@contrib', contributions.length);
+    // console.log('@@contrib', contributions);
+    if (contributions.length === 0) {
+      throw new HttpException('Repository not found', HttpStatus.BAD_REQUEST);
+    } else {
+      res.send(contributions);
+    }
+  }
+}
+
+/* my custom api response solution */
+/*
+ @Get('/')
+  async getRepositories(
+    @Query()
+    query: { language: string; stargazer_count: number; ownerId: number },
     @Req() req: Request,
     @Res() res: Response,
   ) {
@@ -48,54 +95,4 @@ export class RepositoryController {
       'No repos found built with this language.',
       'An error occured.',
     );
-    // } else {
-    //   const repositories = await this.repositoryService.getAllRepos();
-    //   this.apiResponseService.customApiResponse(
-    //     res,
-    //     repositories,
-    //     'No repositories found.',
-    //     'Error getting repositories.',
-    //   );
-    // }
-  }
-
-  @Get('/:id')
-  async findOne(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
-    const repository = await this.repositoryService.getRepoById(id);
-    // if (repository) return repository;
-    // else throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
-    this.apiResponseService.customApiResponse(
-      res,
-      repository,
-      'Repository not found.',
-      'Error getting repository.',
-    );
-  }
-
-  @Get('/:id/contributions')
-  async findContributions(
-    @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
-  ) {
-    const contributions =
-      await this.contributionService.getAllContributionsByRepoId(id);
-    // console.log('@@contrib', contributions.length);
-    // console.log('@@contrib', contributions);
-    this.apiResponseService.customApiResponseForArrays(
-      res,
-      contributions,
-      'The repository might not exist.',
-      'Error getting contributions.',
-    );
-  }
-
-  // @Get('/test')
-  // async getContributors(
-  //   // @Param('full_name', ParseIntPipe) full_name: string,
-  //   @Res() res: Response,
-  // ) {
-  //   const repository = await this.repositoryService.getContributors(full_name);
-  //   console.log('@@repository', repository);
-  //   res.send(repository);
-  // }
-}
+    */
