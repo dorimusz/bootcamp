@@ -1,7 +1,7 @@
 //React.FC(functional components that take a props argument and return JSX) and NextPage(just the page type of a nextjs project - not component!) type:
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
-import UserTable from "../../components/Tables/UserTable";
+import UserTable from "../../components/Tables/UserTable/UserTable";
 import { GetStaticProps } from "next";
 import { getUserList } from "../../lib/users";
 

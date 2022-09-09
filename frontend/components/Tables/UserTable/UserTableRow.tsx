@@ -1,5 +1,5 @@
-import * as S from "./TableAtom";
-import * as I from "../Image/ImageAtom";
+import * as S from "../TableAtom";
+import * as I from "../../Image/ImageAtom";
 
 const UserTableRow: React.FC<{ userData: any }> = ({ userData }) => {
   // console.log("@@", userData);

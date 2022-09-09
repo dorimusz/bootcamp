@@ -1,4 +1,4 @@
-import * as S from "./TableAtom";
+import * as S from "../TableAtom";
 
 //user login can be reached after server/db relations are fixed
 

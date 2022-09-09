@@ -1,8 +1,8 @@
-import * as S from "./TableAtom";
+import * as S from "../TableAtom";
 import ContributionTableRow from "./ContributionTableRow";
 
 import { useSelector } from "react-redux";
-import { contributionSelector } from "../../store/contribution/contributionSelector";
+import { contributionSelector } from "../../../store/contribution/contributionSelector";
 
 const ContributionTable = () => {
   const { contribution } = useSelector(contributionSelector);

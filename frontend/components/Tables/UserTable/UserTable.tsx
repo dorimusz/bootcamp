@@ -1,8 +1,8 @@
-import * as S from "./TableAtom";
+import * as S from "../TableAtom";
 import UserTableRow from "./UserTableRow";
 
 import { useSelector } from "react-redux";
-import { userSelector } from "../../store/user/userSelector";
+import { userSelector } from "../../../store/user/userSelector";
 
 const UserTable = () => {
   const { users } = useSelector(userSelector);
