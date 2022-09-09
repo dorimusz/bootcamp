@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
-import ContributionTable from "../../components/Tables/ContributionTable";
+import ContributionTable from "../../components/Tables/ContributionTable/ContributionTable";
 
 import { GetStaticProps, GetStaticPaths } from "next";
 import { getContributionList } from "../../lib/contributions";

@@ -2,15 +2,15 @@
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
 import UserTable from "../../components/Tables/UserTable/UserTable";
-import { GetStaticProps } from "next";
+import Header from "../../components/Header/Header";
+
 import { getUserList } from "../../lib/users";
 
 import { useEffect } from "react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { userSelector } from "../../store/user/userSelector";
-import { refreshUsers, setUsers } from "../../store/user/userSlice";
-import Header from "../../components/Header/Header";
+import { GetStaticProps } from "next";
+import { useDispatch } from "react-redux";
+import { setUsers } from "../../store/user/userSlice";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const users = await getUserList();
