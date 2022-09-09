@@ -6,8 +6,8 @@ import {
   JoinColumn,
   PrimaryColumn,
 } from 'typeorm';
-import { Repository } from './repository.entity';
-import { User } from './user.entity';
+import { Repository } from '../repository/repository.entity';
+import { User } from '../user/user.entity';
 
 @Entity('contribution')
 export class Contribution {

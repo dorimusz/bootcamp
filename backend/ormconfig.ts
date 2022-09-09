@@ -1,8 +1,8 @@
 // import { ConnectionOptions } from 'typeorm';  //DEPRECATED
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User } from 'src/entity/user.entity';
-import { Repository } from 'src/entity/repository.entity';
-import { Contribution } from 'src/entity/contribution.entity';
+import { User } from 'src/user/user.entity';
+import { Repository } from 'src/repository/repository.entity';
+import { Contribution } from 'src/contribution/contribution.entity';
 
 const config: TypeOrmModuleOptions = {
   type: 'postgres',

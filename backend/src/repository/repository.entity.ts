@@ -9,8 +9,8 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Contribution } from './contribution.entity';
+import { User } from '../user/user.entity';
+import { Contribution } from '../contribution/contribution.entity';
 
 @Entity('repository')
 export class Repository extends BaseEntity {

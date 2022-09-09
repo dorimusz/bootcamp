@@ -1,4 +1,4 @@
-import { Repository as RepositoryEntity } from 'src/entity/repository.entity';
+import { Repository as RepositoryEntity } from 'src/repository/repository.entity';
 export interface RepositoryWithContributionCount extends RepositoryEntity {
   contributionSum: number;
 }

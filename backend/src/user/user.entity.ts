@@ -10,8 +10,8 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Repository } from './repository.entity';
-import { Contribution } from './contribution.entity';
+import { Repository } from '../repository/repository.entity';
+import { Contribution } from '../contribution/contribution.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
