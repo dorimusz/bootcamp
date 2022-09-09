@@ -1,5 +1,6 @@
 import * as I from "../Input/InputAtom";
 import * as B from "../Button/ButtonAtom";
+import { useState } from "react";
 
 const Input: React.FC<{
   type: string;
@@ -7,6 +8,7 @@ const Input: React.FC<{
   value?: string;
   onChange?: () => void;
 }> = ({ type, placeholder, value, onChange = () => {} }) => {
+  // const [input, setInput] = useState(value)
   return (
     <>
       <I.Holder>
@@ -14,7 +16,7 @@ const Input: React.FC<{
           type={type}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          onChange={}
         />
         <B.PrimaryButton>Cleck me</B.PrimaryButton>
       </I.Holder>

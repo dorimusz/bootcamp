@@ -9,7 +9,12 @@ import store from "../store/store";
 import { GetStaticProps } from "next";
 import { getRepositoryList } from "../lib/repositories";
 import { useSelector, useDispatch } from "react-redux";
-import { setRepository } from "../store/repository/repositorySlice";
+import {
+  setRepository,
+  filterLanguage,
+} from "../store/repository/repositorySlice";
+import Header from "../components/Header/Header";
+import Input from "../components/Input/Input";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const repository = await getRepositoryList();
@@ -33,11 +38,19 @@ const Home: React.FC<any> = ({ repository }) => {
     dispatch(setRepository(repository));
     // dispatch(setRepository(repository ?? []));
   }, []); //repository as dependency
-
   return (
     <div>
       <Layout>
         <Container>
+          <Header title={"Repositories"}>
+            <Input
+              type="text"
+              placeholder="valami"
+              value="asd"
+              onChange={() => {}}
+            />
+          </Header>
+
           <CardHolder />
         </Container>
       </Layout>
