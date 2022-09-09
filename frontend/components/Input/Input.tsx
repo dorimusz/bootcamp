@@ -15,8 +15,13 @@ const Input: React.FC<{
   const dispatch = useDispatch();
   const [input, setInput] = useState(value);
 
+  const filterLang = () => {
+    dispatch(filterLanguage(input));
+    setInput("");
+  };
+
   useEffect(() => {
-    console.log("@@stat", input);
+    // console.log("@@stat", input);
   }, [input]);
 
   return (
@@ -28,9 +33,8 @@ const Input: React.FC<{
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <B.PrimaryButton onClick={() => dispatch(filterLanguage(input))}>
-          Cleck me
-        </B.PrimaryButton>
+        {/* <B.PrimaryButton onClick={() => dispatch(filterLanguage(input))}> */}
+        <B.PrimaryButton onClick={filterLang}>Cleck me</B.PrimaryButton>
       </I.Holder>
     </>
   );
