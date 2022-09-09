@@ -21,6 +21,16 @@ export const TextHeader = styled.h1<TextProp>`
   vertical-align: middle;
 `;
 
+export const SmallTextHeader = styled.h2<TextProp>`
+  padding: ${({ padding }) => padding || "0"};
+  margin: ${({ margin }) => margin || "0 1rem"};
+  text-align: ${({ align }) => align || "left"};
+  font-size: ${({ size }) => size || "20px"};
+  color: ${({ colors }) => colors || Colors.WhiteColor};
+  font-weight: 500;
+  vertical-align: middle;
+`;
+
 export const TextPrimary = styled.p<TextProp>`
   margin: ${({ margin }) => margin || "0 1rem"};
   padding: ${({ padding }) => padding || "0"};
