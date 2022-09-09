@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Repository as RepositoryEntity } from '../entity/repository.entity';
-import { User as UserEntity } from '../entity/user.entity';
-import { Contribution as ContributionEntity } from '../entity/contribution.entity';
+import { Repository as RepositoryEntity } from '../repository/repository.entity';
+import { User as UserEntity } from '../user/user.entity';
+import { Contribution as ContributionEntity } from '../contribution/contribution.entity';
 
 @Injectable()
 export class GithubService {

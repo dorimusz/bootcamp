@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
-import { Repository } from '../entity/repository.entity';
-import { User } from '../entity/user.entity';
-import { Contribution } from '../entity/contribution.entity';
+import { Repository } from '../repository/repository.entity';
+import { User } from '../user/user.entity';
+import { Contribution } from '../contribution/contribution.entity';
 import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [

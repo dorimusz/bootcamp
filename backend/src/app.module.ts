@@ -21,9 +21,9 @@ import { AppService } from './app.service';
 
 import { RequestMiddleware } from './middlewares/request.middleware';
 
-import { Repository } from './entity/repository.entity';
-import { User } from './entity/user.entity';
-import { Contribution } from './entity/contribution.entity';
+import { Repository } from './repository/repository.entity';
+import { User } from './user/user.entity';
+import { Contribution } from './contribution/contribution.entity';
 
 import { GithubModule } from './github/github.module';
 import { UserModule } from './user/user.module';
