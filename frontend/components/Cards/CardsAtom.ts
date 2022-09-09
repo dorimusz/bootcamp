@@ -15,7 +15,7 @@ export const CardContainer = styled.div`
 export const Card = styled.div`
   width: 30%;
   min-width: 390px;
-  min-height: 200px;
+  height: 250px;
   border-radius: 24px;
   margin: 0;
   padding: 0.4rem;
@@ -25,7 +25,7 @@ export const A = styled.a`
   background: ${Colors.DarkBlue};
   width: 30%;
   min-width: 390px;
-  min-height: 200px;
+  height: 250px;
   border-radius: 24px;
   margin: 0;
   padding: 0.4rem;
