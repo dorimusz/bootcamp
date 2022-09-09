@@ -43,12 +43,7 @@ const Home: React.FC<any> = ({ repository }) => {
       <Layout>
         <Container>
           <Header title={"Repositories"}>
-            <Input
-              type="text"
-              placeholder="valami"
-              value="asd"
-              onChange={() => {}}
-            />
+            <Input type="text" placeholder="valami" />
           </Header>
 
           <CardHolder />

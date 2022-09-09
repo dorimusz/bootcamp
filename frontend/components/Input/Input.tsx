@@ -1,24 +1,36 @@
 import * as I from "../Input/InputAtom";
 import * as B from "../Button/ButtonAtom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  setRepository,
+  filterLanguage,
+} from "../../store/repository/repositorySlice";
+import { useDispatch } from "react-redux";
 
 const Input: React.FC<{
   type: string;
   placeholder: string;
   value?: string;
-  onChange?: () => void;
-}> = ({ type, placeholder, value, onChange = () => {} }) => {
-  // const [input, setInput] = useState(value)
+}> = ({ type, placeholder, value = "" }) => {
+  const dispatch = useDispatch();
+  const [input, setInput] = useState(value);
+
+  useEffect(() => {
+    console.log("@@stat", input);
+  }, [input]);
+
   return (
     <>
       <I.Holder>
         <I.InputField
           type={type}
           placeholder={placeholder}
-          value={value}
-          onChange={}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
         />
-        <B.PrimaryButton>Cleck me</B.PrimaryButton>
+        <B.PrimaryButton onClick={() => dispatch(filterLanguage(input))}>
+          Cleck me
+        </B.PrimaryButton>
       </I.Holder>
     </>
   );
