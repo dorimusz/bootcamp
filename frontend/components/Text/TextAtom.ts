@@ -37,9 +37,6 @@ export const TextPrimary = styled.p<TextProp>`
   font-size: ${({ size }) => size || "14px"};
   color: ${({ colors, isHighlighted }) =>
     isHighlighted ? Colors.GreenColor : colors || Colors.WhiteColor};
-  &:hover {
-    color: ${Colors.GreenColor};
-  }
 `;
 // export const Title = styled.h2`
 //   font-weight: 700;

@@ -3,7 +3,10 @@ import { Colors } from "../../enums/colorEnums";
 
 interface NavProp {
   justifyContent?: string;
+  color?: string;
+  pathName?: string;
 }
+
 export const NavItemWrapper = styled.ul`
   width: 100%;
   padding-left: 1rem;
@@ -36,3 +39,11 @@ export const TitleContainer = styled.div<NavProp>`
 `;
 
 export const ListItems = styled.li``;
+
+export const LinkText = styled.a<NavProp>`
+  color: ${(props) =>
+    props.href === props.pathName ? Colors.GreenColor : Colors.WhiteColor};
+  &:hover {
+    color: ${Colors.RedColor};
+  }
+`;

@@ -5,8 +5,13 @@ import { Colors } from "../../enums/colorEnums";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDatabase, faTent, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const NavBar = () => {
+  const router = useRouter();
+  //   console.log(router.pathname);
+
   return (
     <S.NavContainer>
       <S.TitleContainer justifyContent="center">
@@ -23,20 +28,41 @@ const NavBar = () => {
       <S.NavItemWrapper>
         <S.ListItems>
           <T.TextPrimary margin="0 0 1rem 0">
-            <FontAwesomeIcon
-              icon={faDatabase}
-              style={{ marginRight: ".5rem", width: "15px", height: "15px" }}
-            />
-            <Link href="/">Repositories</Link>
+            <Link href="/" passHref>
+              <S.LinkText pathName={router.pathname}>
+                <FontAwesomeIcon
+                  icon={faDatabase}
+                  style={{
+                    marginRight: ".5rem",
+                    width: "15px",
+                    height: "15px",
+                  }}
+                />
+                Repositories
+              </S.LinkText>
+            </Link>
+
+            {/* <Link href="/">Repositories</Link> */}
           </T.TextPrimary>
         </S.ListItems>
+
         <S.ListItems>
           <T.TextPrimary margin="0">
-            <FontAwesomeIcon
-              icon={faUser}
-              style={{ marginRight: ".5rem", width: "15px", height: "15px" }}
-            />
-            <Link href="/users">User List</Link>
+            <Link href="/users" passHref>
+              <S.LinkText pathName={router.pathname}>
+                <FontAwesomeIcon
+                  icon={faUser}
+                  style={{
+                    marginRight: ".5rem",
+                    width: "15px",
+                    height: "15px",
+                  }}
+                />
+                User list
+              </S.LinkText>
+            </Link>
+
+            {/* <Link href="/users">User List</Link> */}
           </T.TextPrimary>
         </S.ListItems>
       </S.NavItemWrapper>
