@@ -6,6 +6,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository as RepositoryEntity } from '../repository/repository.entity';
 import { User as UserEntity } from '../user/user.entity';
 import { Contribution as ContributionEntity } from '../contribution/contribution.entity';
+import { GithubRepositoryDto } from './dto/github-repository.dto';
+import { GithubUserDto } from './dto/github-user.dto';
+import { GithubContributionDto } from './dto/github-contribution.dto';
 
 @Injectable()
 export class GithubService {
@@ -49,9 +52,9 @@ export class GithubService {
     );
   }
 
-  buildUser(data: any): UserEntity[] {
+  buildUser(data: any): GithubUserDto[] {
     return data.map((repo) => {
-      return <UserEntity>{
+      return <GithubUserDto>{
         userId: repo.id,
         login: repo.login,
         avatar_url: repo.avatar_url,
@@ -61,9 +64,9 @@ export class GithubService {
     });
   }
 
-  buildContributors(data: any): ContributionEntity[] {
+  buildContributors(data: any): GithubContributionDto[] {
     return data.map((contributor) => {
-      return <ContributionEntity>{
+      return <GithubContributionDto>{
         userId: contributor.userId,
         repositoryId: contributor.repositoryId,
         commitCount: contributor.commitCount,
@@ -71,9 +74,9 @@ export class GithubService {
     });
   }
 
-  buildOwner(data: any): UserEntity[] {
+  buildOwner(data: any): GithubUserDto[] {
     return data.map((repo) => {
-      return <UserEntity>{
+      return <GithubUserDto>{
         userId: repo.owner.id,
         login: repo.owner.login,
         avatar_url: repo.owner.avatar_url,
@@ -83,10 +86,10 @@ export class GithubService {
     });
   }
 
-  buildRepository(data: any): RepositoryEntity {
+  buildRepository(data: any): GithubRepositoryDto {
     return data.map((repository) => {
-      //   console.log('@@OWNER', repository.owner);
-      return <RepositoryEntity>{
+      console.log('@@REPO OWNER', repository.owner);
+      return <GithubRepositoryDto>{
         id: repository.id,
         ownerId: repository.owner.id,
         full_name: repository.full_name,
