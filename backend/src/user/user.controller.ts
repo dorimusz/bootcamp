@@ -3,15 +3,25 @@ import {
   Get,
   Req,
   Res,
+  Body,
   Param,
   ParseIntPipe,
   HttpException,
   HttpStatus,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { Request, Response } from 'express';
+import {} from '@nestjs/common';
+import { UserResponseDto } from './dto/user-response.dto';
+import { SerializeOptions } from '@nestjs/common';
 
 @Controller('user')
+// @UseInterceptors(ClassSerializerInterceptor)
+// @SerializeOptions({
+//   strategy: 'excludeAll',
+// })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -19,7 +29,17 @@ export class UserController {
   async getAllUsers(@Req() req: Request, @Res() res: Response) {
     const users = await this.userService.getAllUsers();
     if (users) {
-      res.send(users);
+      const lessUserDataArray = [];
+      users.forEach((user) => {
+        const lessUserData = new UserResponseDto({
+          login: user.login,
+          avatar_url: user.avatar_url,
+          type: user.type,
+        });
+        lessUserDataArray.push(lessUserData);
+      });
+      res.send(lessUserDataArray);
+      // res.send(users);
     } else {
       throw new HttpException(
         'Users not found, try again later.',
@@ -30,12 +50,20 @@ export class UserController {
 
   @Get('/:id')
   async findOneUserById(
+    // @Body() createUserDto: UserResponseDto,
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {
     const user = await this.userService.getUserById(id);
     if (user) {
-      res.send(user);
+      // console.log('@@USER', user);
+      // res.send(user);
+      const lessUserData = new UserResponseDto({
+        login: user.login,
+        avatar_url: user.avatar_url,
+        type: user.type,
+      });
+      res.send(lessUserData);
     } else {
       throw new HttpException(
         'User with the given might not exist, try again.',
