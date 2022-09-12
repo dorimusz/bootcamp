@@ -20,6 +20,7 @@ export class RepositoryService {
 
     result.map((repos: RepositoryWithContributionCount) => {
       const contributionList = repos.contributions; //repository objects with
+      //loadRelationCountAndMap(repository.contributions)
 
       console.log('@@REPOLIST', repos);
       // console.log('@@CONTRIBUTIONLIST', repos.contributionList);
@@ -43,22 +44,12 @@ export class RepositoryService {
       //doesn't throw an error, gives null
       where: { id },
       // relations: ['contributions', 'owner'],
-    }); // w type number it has a problem
+    });
     // return await this.repositoryRepository.findOneOrFail({ //throws an error
     return result;
   }
 
-  /* 
-  async findContributions(id: number): Promise<ContributionEntity[]> {
-    return await this.contributionRepository.find({
-      where: { repositoryId: id },
-    });
-  }
-  */
-
-  // async getContributors(full_name: string): Promise<ContributionEntity[]> {
-
-  // }
+  //getContributions()
 
   async searchRepositories(
     language: string,
@@ -77,19 +68,22 @@ export class RepositoryService {
       });
     }
     return await this.getAllRepos();
-
-    //return await this.repositoryRepository.find({
-    //   where: [
-    //     { language: query.language },
-    //     { stargazer_count: query.stargazer_count },
-    //     { ownerId: query.ownerId },
-    //   ],
-    // });
-    // SELECT * FROM repository WHERE language = 'en' OR ownerId = 1 OR stargazer_count=1;
-
-    // return await this.repositoryRepository.find({
-    //   where: { language: 'en', ownerId: 1 },
-    // });
-    // SELECT * FROM repository WHERE language = 'en' AND ownerId = 1;
   }
 }
+
+/*
+// searchRepositories()
+return await this.repositoryRepository.find({
+  where: [
+    { language: query.language },
+    { stargazer_count: query.stargazer_count },
+    { ownerId: query.ownerId },
+  ],
+});
+SELECT * FROM repository WHERE language = 'en' OR ownerId = 1 OR stargazer_count=1;
+
+return await this.repositoryRepository.find({
+  where: { language: 'en', ownerId: 1 },
+});
+SELECT * FROM repository WHERE language = 'en' AND ownerId = 1;
+*/
