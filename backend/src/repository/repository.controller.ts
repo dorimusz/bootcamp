@@ -21,8 +21,7 @@ import { ApiResponseService } from 'src/utils/apiResponse.service';
 export class RepositoryController {
   constructor(
     private readonly repositoryService: RepositoryService, // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    private readonly contributionService: ContributionService,
-    private readonly apiResponseService: ApiResponseService,
+    private readonly contributionService: ContributionService, // private readonly apiResponseService: ApiResponseService, // no need fot this - using HttpException instead
   ) {}
 
   // @UseInterceptors(CacheInterceptor)
@@ -32,7 +31,7 @@ export class RepositoryController {
     query: { language: string; stargazer_count: number; ownerId: number },
     @Res() res: Response,
   ) {
-    console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
+    // console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
     const queryRepo = await this.repositoryService.searchRepositories(
       query.language,
       query.stargazer_count,
@@ -51,9 +50,11 @@ export class RepositoryController {
   @Get('/:id')
   async findOne(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
     const repository = await this.repositoryService.getRepoById(id);
-    if (repository) res.send(repository);
-    else
+    if (repository) {
+      res.send(repository);
+    } else {
       throw new HttpException('Repository not found', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get('/:id/contributions')

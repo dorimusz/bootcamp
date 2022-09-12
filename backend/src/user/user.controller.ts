@@ -1,24 +1,31 @@
-import { Controller, Get, Req, Res, Param, ParseIntPipe } from '@nestjs/common';
-import { ApiResponseService } from 'src/utils/apiResponse.service';
+import {
+  Controller,
+  Get,
+  Req,
+  Res,
+  Param,
+  ParseIntPipe,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { Request, Response } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly apiResponseService: ApiResponseService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   async getAllUsers(@Req() req: Request, @Res() res: Response) {
     const users = await this.userService.getAllUsers();
-    this.apiResponseService.customApiResponse(
-      res,
-      users,
-      'Users cannot be found.',
-      'Error getting users.',
-    );
+    if (users) {
+      res.send(users);
+    } else {
+      throw new HttpException(
+        'Users not found, try again later.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Get('/:id')
@@ -27,11 +34,13 @@ export class UserController {
     @Res() res: Response,
   ) {
     const user = await this.userService.getUserById(id);
-    this.apiResponseService.customApiResponse(
-      res,
-      user,
-      'User not found.',
-      'Error getting user.',
-    );
+    if (user) {
+      res.send(user);
+    } else {
+      throw new HttpException(
+        'User with the given might not exist, try again.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
