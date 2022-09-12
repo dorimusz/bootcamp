@@ -19,7 +19,8 @@ export class ContributionService {
   async getAllContributionsByRepoId(id: number): Promise<ContributionEntity[]> {
     return await this.contributionRepository.find({
       where: { repositoryId: id },
-      relations: ['repository', 'user'],
+      relations: ['user'], //returns null value - relation not ok
+      // relations: ['repository', 'user'],
     });
   }
 

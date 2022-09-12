@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+// import { Exclude } from 'class-transformer';
 
 export class UserResponseDto {
   // @ApiProperty()
@@ -11,10 +11,10 @@ export class UserResponseDto {
   // @ApiProperty()
   type: string;
 
-  @Exclude()
+  // @Exclude()
   html_url: string;
 
-  @Exclude()
+  // @Exclude()
   userId: number;
 
   constructor(partial: Partial<UserResponseDto>) {

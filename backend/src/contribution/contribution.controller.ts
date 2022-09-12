@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ContributionService } from './contribution.service';
 import { Request, Response } from 'express';
+import { ContributionResponseDto } from './dto/contribution.dto';
 @Controller('contribution')
 export class ContributionController {
   constructor(private readonly contributionService: ContributionService) {}
@@ -23,6 +24,15 @@ export class ContributionController {
         HttpStatus.BAD_REQUEST,
       );
     } else {
+      const lessDataArray = [];
+      contributions.forEach((contribution) => {
+        const lessData = new ContributionResponseDto({
+          userId: contribution.userId,
+          commitCount: contribution.commitCount,
+        });
+        lessDataArray.push(lessData);
+      });
+      // res.send(lessDataArray);
       res.send(contributions);
     }
   }
@@ -32,16 +42,23 @@ export class ContributionController {
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {
-    const users = await this.contributionService.getAllContributionsByRepoId(
-      id,
-    );
-    if (users.length === 0) {
+    const contributions =
+      await this.contributionService.getAllContributionsByRepoId(id);
+    if (contributions.length === 0) {
       throw new HttpException(
         'No contributions found, try again.',
         HttpStatus.BAD_REQUEST,
       );
     } else {
-      res.send(users);
+      const lessDataArray = [];
+      contributions.forEach((contribution) => {
+        const lessData = new ContributionResponseDto({
+          userId: contribution.userId,
+          commitCount: contribution.commitCount,
+        });
+        lessDataArray.push(lessData);
+      });
+      res.send(lessDataArray);
     }
   }
 }
