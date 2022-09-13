@@ -16,6 +16,7 @@ import { Request, Response } from 'express';
 import { RepositoryService } from './repository.service';
 import { ContributionService } from 'src/contribution/contribution.service';
 import { Repository as RepositoryEntity } from './repository.entity';
+import { RepositoryResponseDto } from './dto/repository-response.dto';
 // import { ApiResponseService } from 'src/utils/apiResponse.service';
 @Controller('/repository')
 export class RepositoryController {
@@ -43,6 +44,21 @@ export class RepositoryController {
         HttpStatus.BAD_REQUEST,
       );
     } else {
+      console.log('QUERY', queryRepo);
+      // const lessDataArray = [];
+      // queryRepo.forEach((repository) => {
+      //   const lessData = new RepositoryResponseDto({
+      //     full_name: repository.full_name,
+      //     ownerId: repository.ownerId,
+      //     description: repository.description,
+      //     language: repository.language,
+      //     stargazer_count: repository.stargazer_count,
+      //     contributionSum: repository.contributionSum, //want to use the repo entity
+      //     contributions: repository.contributions,
+      //   });
+      //   lessDataArray.push(lessData);
+      // });
+      // res.send(lessDataArray); //the queried data not using the dto schema
       res.send(queryRepo);
     }
   }
@@ -65,7 +81,7 @@ export class RepositoryController {
     const contributions =
       await this.contributionService.getAllContributionsByRepoId(id);
     // console.log('@@contrib', contributions.length);
-    // console.log('@@contrib', contributions);
+    console.log('@@contrib', contributions);
     if (contributions.length === 0) {
       throw new HttpException('Repository not found', HttpStatus.BAD_REQUEST);
     } else {

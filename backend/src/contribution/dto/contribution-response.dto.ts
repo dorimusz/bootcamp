@@ -7,3 +7,5 @@ export class ContributionResponseDto {
     Object.assign(this, partial);
   }
 }
+
+//send user login as well, its empty rn

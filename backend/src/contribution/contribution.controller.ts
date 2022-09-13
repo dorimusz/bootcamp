@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ContributionService } from './contribution.service';
 import { Request, Response } from 'express';
-import { ContributionResponseDto } from './dto/contribution.dto';
+import { ContributionResponseDto } from './dto/contribution-response.dto';
 @Controller('contribution')
 export class ContributionController {
   constructor(private readonly contributionService: ContributionService) {}
@@ -32,8 +32,8 @@ export class ContributionController {
         });
         lessDataArray.push(lessData);
       });
-      // res.send(lessDataArray);
-      res.send(contributions);
+      res.send(lessDataArray);
+      // res.send(contributions);
     }
   }
 
@@ -59,6 +59,7 @@ export class ContributionController {
         lessDataArray.push(lessData);
       });
       res.send(lessDataArray);
+      // res.send(contributions);
     }
   }
 }
