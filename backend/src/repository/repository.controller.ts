@@ -91,14 +91,13 @@ export class RepositoryController {
           description: repository.description,
           language: repository.language,
           stargazer_count: repository.stargazer_count,
-          // contributionSum: repository.contributionSum, //want to use the repo entity
           contributions: repository.contributions,
+          // contributionSum: repository.contributionSum, //wants to use the repo entity
         });
         lessDataArray.push(lessData);
       });
-      res.send(lessDataArray); //the queried data not using the dto schema
-
-      // res.send(queryRepo);
+      // res.send(lessDataArray);
+      res.send(queryRepo);
     }
   }
 

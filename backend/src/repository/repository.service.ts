@@ -3,7 +3,7 @@ import { Cache } from 'cache-manager';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Repository as RepositoryEntity } from './repository.entity';
-import { RepositoryWithContributionCount } from './dto/repository.dto';
+import addContributionSum from '../utils/addContributionSum';
 import { ContributionService } from 'src/contribution/contribution.service';
 
 @Injectable()
@@ -21,19 +21,7 @@ export class RepositoryService {
       relations: ['owner', 'contributions'],
     });
 
-    result.map((repos: RepositoryWithContributionCount) => {
-      const contributionList = repos.contributions; //repository objects with
-      //loadRelationCountAndMap(repository.contributions)
-
-      // console.log('@@REPOLIST', repos);
-      // console.log('@@CONTRIBUTIONLIST', repos.contributionList);
-      const sum = contributionList
-        .map((contribution) => contribution.commitCount)
-        .reduce((prev, next) => prev + next);
-
-      repos.contributionSum = sum;
-      // console.log('@@sum', sum);
-    });
+    addContributionSum(result);
     // console.log('@@COUNT', contributionSum); //sum of commitcounts in an array
     // console.log('@@REPORESULT', result[0].contributions);
     // console.log('@@REPORESULT', result);
@@ -62,7 +50,7 @@ export class RepositoryService {
     ownerId: number,
   ) {
     if (language || stargazer_count || ownerId) {
-      return await this.repositoryRepository.find({
+      const result = await this.repositoryRepository.find({
         where: [
           {
             language: language,
@@ -70,7 +58,12 @@ export class RepositoryService {
             ownerId: ownerId,
           },
         ],
+        relations: ['owner', 'contributions'],
       });
+      addContributionSum(result);
+      console.log('@@IAO', result);
+      await this.cacheManager.set('queryRepos', result);
+      return result;
     }
     return await this.getAllRepos();
   }
