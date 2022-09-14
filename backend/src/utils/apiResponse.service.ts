@@ -57,3 +57,27 @@ export class ApiResponseService {
     }
   }
 }
+
+/* custom api response solution used in a controller*/
+/*
+ @Get('/')
+  async getRepositories(
+    @Query()
+    query: { language: string; stargazer_count: number; ownerId: number },
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    console.log(query.language || query.stargazer_count || query.ownerId); //query.language {language: 'Ruby'}
+    // if (query.language || query.stargazer_count || query.ownerId) {
+    const queryRepo = await this.repositoryService.searchRepositories(
+      query.language,
+      query.stargazer_count,
+      query.ownerId,
+    );
+    this.apiResponseService.customApiResponse(
+      res,
+      queryRepo,
+      'No repos found built with this language.',
+      'An error occured.',
+    );
+    */
