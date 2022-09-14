@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, CACHE_MANAGER } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Repository as RepositoryEntity } from './repository.entity';
@@ -9,8 +10,10 @@ import { ContributionService } from 'src/contribution/contribution.service';
 export class RepositoryService {
   constructor(
     @InjectRepository(RepositoryEntity)
-    private readonly repositoryRepository: Repository<RepositoryEntity>, // private readonly contributionService: ContributionService,
+    private readonly repositoryRepository: Repository<RepositoryEntity>,
   ) {}
+  // private readonly contributionService: ContributionService,
+  // @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
   //searchRepositories() uses it
   async getAllRepos(): Promise<RepositoryEntity[]> {
@@ -22,7 +25,7 @@ export class RepositoryService {
       const contributionList = repos.contributions; //repository objects with
       //loadRelationCountAndMap(repository.contributions)
 
-      console.log('@@REPOLIST', repos);
+      // console.log('@@REPOLIST', repos);
       // console.log('@@CONTRIBUTIONLIST', repos.contributionList);
       const sum = contributionList
         .map((contribution) => contribution.commitCount)
@@ -33,13 +36,15 @@ export class RepositoryService {
     });
     // console.log('@@COUNT', contributionSum); //sum of commitcounts in an array
     // console.log('@@REPORESULT', result[0].contributions);
-    console.log('@@REPORESULT', result);
+    // console.log('@@REPORESULT', result);
 
+    // await this.cacheManager.set('repos', result);
+    // console.log('@@redis', await this.cacheManager.get('repos'));
     return result;
   }
 
   async getRepoById(id: number): Promise<RepositoryEntity> {
-    console.log('@@ID', id);
+    // console.log('@@ID', id);
     const result = await this.repositoryRepository.findOne({
       //doesn't throw an error, gives null
       where: { id },

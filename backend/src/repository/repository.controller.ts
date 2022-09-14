@@ -9,6 +9,10 @@ import {
   Query,
   UseInterceptors,
   CacheInterceptor,
+  CACHE_MANAGER,
+  Inject,
+  CacheTTL,
+  CacheKey,
 } from '@nestjs/common';
 // import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 // import { Logger } from 'winston';
@@ -17,15 +21,20 @@ import { RepositoryService } from './repository.service';
 import { ContributionService } from 'src/contribution/contribution.service';
 import { Repository as RepositoryEntity } from './repository.entity';
 import { RepositoryResponseDto } from './dto/repository-response.dto';
+import { Cache } from 'cache-manager';
 // import { ApiResponseService } from 'src/utils/apiResponse.service';
 @Controller('/repository')
 export class RepositoryController {
   constructor(
-    private readonly repositoryService: RepositoryService, // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    private readonly contributionService: ContributionService, // private readonly apiResponseService: ApiResponseService, // no need fot this - using HttpException instead
+    private readonly repositoryService: RepositoryService,
+    private readonly contributionService: ContributionService,
   ) {}
+  // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  // private readonly apiResponseService: ApiResponseService, // no need fot this - using HttpException instead
+  // @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
   // @UseInterceptors(CacheInterceptor)
+  // @CacheTTL(30)
   @Get('/')
   async getRepositories(
     @Query()
@@ -44,7 +53,6 @@ export class RepositoryController {
         HttpStatus.BAD_REQUEST,
       );
     } else {
-      console.log('QUERY', queryRepo);
       // const lessDataArray = [];
       // queryRepo.forEach((repository) => {
       //   const lessData = new RepositoryResponseDto({
@@ -59,7 +67,11 @@ export class RepositoryController {
       //   lessDataArray.push(lessData);
       // });
       // res.send(lessDataArray); //the queried data not using the dto schema
+
       res.send(queryRepo);
+
+      // await this.cacheManager.set('repos', queryRepo);
+      // console.log('@@redis', await this.cacheManager.get('repos'));
     }
   }
 
@@ -81,7 +93,7 @@ export class RepositoryController {
     const contributions =
       await this.contributionService.getAllContributionsByRepoId(id);
     // console.log('@@contrib', contributions.length);
-    console.log('@@contrib', contributions);
+    // console.log('@@contrib', contributions);
     if (contributions.length === 0) {
       throw new HttpException('Repository not found', HttpStatus.BAD_REQUEST);
     } else {

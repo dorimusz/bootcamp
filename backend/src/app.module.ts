@@ -1,10 +1,9 @@
 import {
-  CacheInterceptor,
   CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
-  RequestMethod,
+  CacheInterceptor,
 } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { LoggerConfig } from './config/logger.config';
@@ -51,10 +50,8 @@ const logger: LoggerConfig = new LoggerConfig();
     //   isGlobal: true,
     //   isCacheableValue: (value) => value !== undefined || value !== null,
     //   store: redisStore,
-    //   socket: {
-    //     host: 'localhost',
-    //     port: 6379,
-    //   },
+    //   host: 'localhost',
+    //   port: 6379,
     // }),
   ],
   controllers: [AppController],
