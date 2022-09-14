@@ -11,8 +11,6 @@ import {
   CacheInterceptor,
   CACHE_MANAGER,
   Inject,
-  CacheTTL,
-  CacheKey,
 } from '@nestjs/common';
 // import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 // import { Logger } from 'winston';
@@ -35,14 +33,12 @@ export class RepositoryController {
   constructor(
     private readonly repositoryService: RepositoryService,
     private readonly contributionService: ContributionService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
-  // @Inject(CACHE_MANAGER) private cacheManager: Cache,
   // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   // private readonly apiResponseService: ApiResponseService, // no need fot this - using HttpException instead
 
-  // @UseInterceptors(CacheInterceptor)
-  // @CacheTTL(30)
-  // @CacheKey('repos')
+  // @UseInterceptors(CacheInterceptor) // no need for this, set it manually at service and works
   @Get('/')
   @ApiQuery({
     name: 'language',
@@ -87,22 +83,22 @@ export class RepositoryController {
         HttpStatus.BAD_REQUEST,
       );
     } else {
-      // const lessDataArray = [];
-      // queryRepo.forEach((repository) => {
-      //   const lessData = new RepositoryResponseDto({
-      //     full_name: repository.full_name,
-      //     ownerId: repository.ownerId,
-      //     description: repository.description,
-      //     language: repository.language,
-      //     stargazer_count: repository.stargazer_count,
-      //     contributionSum: repository.contributionSum, //want to use the repo entity
-      //     contributions: repository.contributions,
-      //   });
-      //   lessDataArray.push(lessData);
-      // });
-      // res.send(lessDataArray); //the queried data not using the dto schema
+      const lessDataArray = [];
+      queryRepo.forEach((repository) => {
+        const lessData = new RepositoryResponseDto({
+          full_name: repository.full_name,
+          ownerId: repository.ownerId,
+          description: repository.description,
+          language: repository.language,
+          stargazer_count: repository.stargazer_count,
+          // contributionSum: repository.contributionSum, //want to use the repo entity
+          contributions: repository.contributions,
+        });
+        lessDataArray.push(lessData);
+      });
+      res.send(lessDataArray); //the queried data not using the dto schema
 
-      res.send(queryRepo);
+      // res.send(queryRepo);
     }
   }
 

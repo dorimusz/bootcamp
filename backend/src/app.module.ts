@@ -46,18 +46,20 @@ const logger: LoggerConfig = new LoggerConfig();
     RepositoryModule,
     ContributionModule,
     ApiResponseModule,
-    // CacheModule.register({
-    //   isGlobal: true,
-    //   isCacheableValue: (value) => value !== undefined || value !== null,
-    //   store: redisStore,
-    //   host: 'localhost',
-    //   port: 6379,
-    // }),
+    CacheModule.register({
+      isGlobal: true,
+      isCacheableValue: (value) => value !== undefined || value !== null,
+      store: redisStore,
+      // url: process.env.REDIS_URL,
+      host: 'localhost',
+      port: 6379,
+    }),
   ],
   controllers: [AppController],
   providers: [
     AppService,
     // {
+    //use cache globally, however not sure it woks this way as used it manually
     //   provide: APP_INTERCEPTOR,
     //   useClass: CacheInterceptor,
     // },

@@ -11,9 +11,9 @@ export class RepositoryService {
   constructor(
     @InjectRepository(RepositoryEntity)
     private readonly repositoryRepository: Repository<RepositoryEntity>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
   // private readonly contributionService: ContributionService,
-  // @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
   //searchRepositories() uses it
   async getAllRepos(): Promise<RepositoryEntity[]> {
@@ -38,8 +38,8 @@ export class RepositoryService {
     // console.log('@@REPORESULT', result[0].contributions);
     // console.log('@@REPORESULT', result);
 
-    // await this.cacheManager.set('repos', result);
-    // console.log('@@redis', await this.cacheManager.get('repos'));
+    await this.cacheManager.set('repos', result);
+    console.log('@@redis', await this.cacheManager.get('repos'));
     return result;
   }
 
