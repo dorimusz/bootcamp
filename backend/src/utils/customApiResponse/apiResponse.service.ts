@@ -1,7 +1,7 @@
 import { Injectable, Inject, Req, Res, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { RequestMiddleware } from '../middlewares/request.middleware';
+import { RequestMiddleware } from '../../middlewares/request.middleware';
 @Injectable()
 export class ApiResponseService {
   constructor(

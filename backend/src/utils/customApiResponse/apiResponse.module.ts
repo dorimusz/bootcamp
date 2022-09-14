@@ -1,5 +1,5 @@
 import { Module, Global } from '@nestjs/common';
-import { ApiResponseService } from '../utils/apiResponse.service';
+import { ApiResponseService } from './apiResponse.service';
 import { RequestMiddleware } from 'src/middlewares/request.middleware';
 
 @Global()

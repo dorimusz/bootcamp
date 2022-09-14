@@ -28,7 +28,7 @@ import { GithubModule } from './github/github.module';
 import { UserModule } from './user/user.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ContributionModule } from './contribution/contribution.module';
-import { ApiResponseModule } from './utils/apiResponse.module';
+import { ApiResponseModule } from './utils/customApiResponse/apiResponse.module';
 
 import { ContributionController } from './contribution/contribution.controller';
 import { RepositoryController } from './repository/repository.controller';
