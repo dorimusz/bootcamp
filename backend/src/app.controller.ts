@@ -18,7 +18,9 @@ export class AppController {
     private readonly appService: AppService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger, // private readonly logger: LoggerConfig,
   ) {}
-
+}
+/* 
+//Endpoint for testing stuff
   @Get() //also accepts a string as a path
   // @CacheKey('some_route') //custom cache
   // @CacheTTL(60) //custom ttl
@@ -26,4 +28,4 @@ export class AppController {
   async getHello() {
     return this.appService.getHello();
   }
-}
+*/
