@@ -11,6 +11,7 @@ import {
   ClassSerializerInterceptor,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserService } from '../user/user.service';
 import { Request, Response } from 'express';
 import {} from '@nestjs/common';
@@ -26,6 +27,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @ApiOkResponse({
+    description: 'List of users has been successfully fetched',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No users found.',
+  })
   async getAllUsers(@Req() req: Request, @Res() res: Response) {
     const users = await this.userService.getAllUsers();
     if (users) {
@@ -49,6 +57,20 @@ export class UserController {
   }
 
   @Get('/:id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'An id of an existing user or owner',
+    type: Number,
+    example: 70908,
+  })
+  @ApiOkResponse({
+    description: 'The requested user has been successfully fetched',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No user found with the given id.',
+  })
   async findOneUserById(
     // @Body() createUserDto: UserResponseDto,
     @Param('id', ParseIntPipe) id: number,
