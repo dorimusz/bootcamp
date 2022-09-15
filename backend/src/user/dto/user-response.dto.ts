@@ -12,10 +12,10 @@ export class UserResponseDto {
   type: string;
 
   // @Exclude()
-  html_url: string;
+  // html_url: string;
 
   // @Exclude()
-  userId: number;
+  // userId: number;
 
   constructor(partial: Partial<UserResponseDto>) {
     Object.assign(this, partial);

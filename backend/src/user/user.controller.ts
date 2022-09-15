@@ -34,7 +34,8 @@ export class UserController {
     status: 404,
     description: 'No users found.',
   })
-  async getAllUsers(@Req() req: Request, @Res() res: Response) {
+  // async getAllUsers(@Res() res: Response) {
+  async getAllUsers() {
     const users = await this.userService.getAllUsers();
     if (users) {
       const lessUserDataArray = [];
@@ -46,7 +47,8 @@ export class UserController {
         });
         lessUserDataArray.push(lessUserData);
       });
-      res.send(lessUserDataArray);
+      return lessUserDataArray;
+      // res.send(lessUserDataArray);
       // res.send(users);
     } else {
       throw new HttpException(
@@ -74,7 +76,7 @@ export class UserController {
   async findOneUserById(
     // @Body() createUserDto: UserResponseDto,
     @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
+    // @Res() res: Response,
   ) {
     const user = await this.userService.getUserById(id);
     if (user) {
@@ -85,7 +87,8 @@ export class UserController {
         avatar_url: user.avatar_url,
         type: user.type,
       });
-      res.send(lessUserData);
+      // res.send(lessUserData);
+      return lessUserData;
     } else {
       throw new HttpException(
         'User with the given might not exist, try again.',
