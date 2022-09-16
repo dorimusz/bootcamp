@@ -24,8 +24,10 @@ export class ContributionController {
     status: 404,
     description: 'No contributions found.',
   })
-  async getAllContributions(@Req() req: Request, @Res() res: Response) {
+  // async getAllContributions(@Req() req: Request, @Res() res: Response) {
+  async getAllContributions() {
     const contributions = await this.contributionService.getAllContributions();
+    console.log('@@CONTS', contributions);
     if (contributions.length === 0) {
       throw new HttpException(
         "Something went wrong, couldn't find contributions, try again later.",
@@ -40,7 +42,9 @@ export class ContributionController {
         });
         lessDataArray.push(lessData);
       });
-      res.send(lessDataArray);
+      // return lessDataArray;
+      return contributions;
+      // res.send(lessDataArray);
       // res.send(contributions);
     }
   }
