@@ -8,9 +8,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('UserController', () => {
   let userController: UserController;
-  let userService: UserService;
 
   beforeEach(async () => {
+    // creating a fake module on the fly. simulating an isolated modul for the test
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
@@ -30,11 +30,10 @@ describe('UserController', () => {
     }).compile();
 
     userController = module.get<UserController>(UserController);
-    userService = module.get<UserService>(UserService);
   });
 
   afterEach(() => {
-    // restore the spy created with spyOn
+    // restore the spy created with spyOn - there is none
     jest.restoreAllMocks();
   });
 
